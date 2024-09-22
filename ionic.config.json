@@ -1,0 +1,7 @@
+{
+  "name": "Desvare-PWA",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
