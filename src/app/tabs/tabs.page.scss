@@ -1,1 +1,15 @@
+ion-tab-bar {
+    ion-tab-button {
+        img {
+            width: 24px;
+            height: 24px;
+            filter: invert(50%); // Color por defecto
+        }
 
+        &.tab-selected {
+            img {
+                filter: brightness(0) saturate(100%) invert(27%) sepia(100%) saturate(4654%) hue-rotate(214deg) brightness(102%) contrast(107%);
+            }
+        }
+    }
+}
