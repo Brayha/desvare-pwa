@@ -15,6 +15,42 @@ export class MapaComponent implements OnInit {
   private map!: google.maps.Map;
   private userMarker!: google.maps.Marker;
 
+  private mapStyle = [
+    {
+      "featureType": "administrative",
+      "elementType": "geometry",
+      "stylers": [{"visibility": "off"}]
+    },
+    {
+      "featureType": "poi",
+      "stylers": [{"visibility": "off"}]
+    },
+    {
+      "featureType": "road",
+      "elementType": "labels.icon",
+      "stylers": [{"visibility": "off"}]
+    },
+    {
+      "featureType": "transit",
+      "stylers": [{"visibility": "off"}]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text",
+      "stylers": [{"visibility": "off"}]
+    },
+    {
+      "featureType": "landscape",
+      "elementType": "geometry",
+      "stylers": [{"color": "#f5f5f5"}]
+    },
+    {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [{"color": "#c9c9c9"}]
+    }
+  ];
+
   ngOnInit() {
     this.initMap();
   }
@@ -23,7 +59,9 @@ export class MapaComponent implements OnInit {
     const defaultLocation = { lat: 4.710989, lng: -74.072092 }; // Bogotá
     const mapOptions: google.maps.MapOptions = {
       center: defaultLocation,
-      zoom: 16
+      zoom: 16,
+      disableDefaultUI: true, // Desactiva los controles por defecto
+      styles: this.mapStyle
     };
 
     this.map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
