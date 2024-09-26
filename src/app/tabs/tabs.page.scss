@@ -1,14 +1,35 @@
 ion-tab-bar {
+    background-color: white;
+    height: 94px;
+
     ion-tab-button {
+        background-color: white;
+
+
         img {
             width: 24px;
             height: 24px;
             filter: invert(50%); // Color por defecto
         }
 
+        ion-label {
+            color: var(--Tailwind-gray-400, #9CA3AF);
+            text-align: center;
+            font-family: Gilroy;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            margin-top: 4px;
+        }
+
         &.tab-selected {
             img {
                 filter: brightness(0) saturate(100%) invert(27%) sepia(100%) saturate(4654%) hue-rotate(214deg) brightness(102%) contrast(107%);
+            }
+
+            ion-label {
+                color: var(--color-selected);
             }
         }
     }
