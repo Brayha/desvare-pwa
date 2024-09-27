@@ -11,13 +11,19 @@ import { MapaComponent } from '../mapa/mapa.component';
   imports: [IonicModule, MapaComponent, ModalAddressComponent]
 })
 export class Tab2Page {
+  currentAddress: string = '';
+
   constructor(private modalCtrl: ModalController) { }
+
+  onAddressChanged(address: string) {
+    this.currentAddress = address;
+  }
 
   async abrirModalDestino() {
     const modal = await this.modalCtrl.create({
       component: ModalAddressComponent,
       componentProps: {
-        origen: 'Mi ubicación actual' // Puedes cambiar esto por la ubicación real
+        origen: this.currentAddress
       }
     });
 

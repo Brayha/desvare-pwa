@@ -1,6 +1,6 @@
 /// <reference types="@types/google.maps" />
 
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef,Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,8 +12,10 @@ import { CommonModule } from '@angular/common';
 })
 export class MapaComponent implements OnInit {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
+  @Output() addressChanged = new EventEmitter<string>();
   private map!: google.maps.Map;
   private userMarker!: google.maps.Marker;
+  private geocoder!: google.maps.Geocoder;
 
   private mapStyle = [
     {
@@ -53,6 +55,7 @@ export class MapaComponent implements OnInit {
 
   ngOnInit() {
     this.initMap();
+    this.geocoder = new google.maps.Geocoder();
   }
 
   initMap() {
@@ -78,6 +81,7 @@ export class MapaComponent implements OnInit {
           };
           this.map.setCenter(pos);
           this.addUserMarker(pos);
+          this.getAddressFromCoords(pos.lat, pos.lng);
         },
         () => {
           this.handleLocationError(true);
@@ -86,6 +90,17 @@ export class MapaComponent implements OnInit {
     } else {
       this.handleLocationError(false);
     }
+  }
+
+  getAddressFromCoords(lat: number, lng: number) {
+    const latlng = new google.maps.LatLng(lat, lng);
+    this.geocoder.geocode({ location: latlng }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK) {
+        if (results && results.length > 0) {
+          this.addressChanged.emit(results[0].formatted_address);
+        }
+      }
+    });
   }
 
   private obtenerPathDelSVG(): string {
