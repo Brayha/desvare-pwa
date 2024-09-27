@@ -34,7 +34,7 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* @import '@ionic/angular/css/palettes/dark.system.css'; */
 
 @font-face {
   font-family: 'Gilroy';
@@ -66,4 +66,13 @@
 
 body {
   font-family: 'Gilroy', sans-serif;
+}
+
+ion-input, ion-label {
+  font-family: 'Gilroy', sans-serif !important;
+}
+
+// Aplicar Gilroy al texto del placeholder
+input::placeholder {
+  font-family: 'Gilroy', sans-serif !important;
 }

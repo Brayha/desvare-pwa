@@ -1,0 +1,27 @@
+<ion-header mode="ios">
+  <ion-toolbar class="header-address">
+    <img slot="start" (click)="dismiss()" src="../../assets/iconsax-svg/All/linear/arrow-left.svg" alt="arrow-left">
+    <ion-title class="title-address">¿A dónde vamos?</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content-address">
+
+    <ion-item class="input-address" lines="none" mode="ios">
+      <img slot="start" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
+      <ion-input class="no-border" label="Origen" label-placement="floating" fill="outline" placeholder="Enter text"
+        [value]="origen"></ion-input>
+    </ion-item>
+
+    <ion-item class="input-address custom-input" lines="none" mode="ios">
+      <img slot="start" class="icon-destino" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
+      <ion-input class="destino-input" label="Destino" labelPlacement="stacked" [(ngModel)]="destino"
+        placeholder="Ingrese el destino"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" (click)="confirmarDestino()" [disabled]="!destino">
+      Confirmar Destino
+    </ion-button>
+  </div>
+</ion-content>
