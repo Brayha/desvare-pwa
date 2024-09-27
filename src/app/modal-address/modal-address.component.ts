@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IonicModule, ModalController } from '@ionic/angular';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { IonicModule, ModalController, IonInput } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class ModalAddressComponent  implements OnInit {
   @Input() origen: string = '';
   destino: string = '';
+  @ViewChild('destinoInput', { static: false }) destinoInput!: IonInput;
 
   constructor(private modalCtrl: ModalController) {}
 
@@ -20,14 +21,15 @@ export class ModalAddressComponent  implements OnInit {
     // Puedes inicializar cualquier dato necesario aquí
   }
 
-  dismiss() {
-    this.modalCtrl.dismiss();
+  ionViewDidEnter() {
+    // Esto se ejecutará cuando la vista del modal se haya cargado completamente
+    setTimeout(() => {
+      this.destinoInput.setFocus();
+    }, 150);
   }
 
-  confirmarDestino() {
-    this.modalCtrl.dismiss({
-      destino: this.destino
-    });
+  dismiss() {
+    this.modalCtrl.dismiss();
   }
 
 }

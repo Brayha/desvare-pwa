@@ -16,12 +16,19 @@
 
     <ion-item class="input-address custom-input" lines="none" mode="ios">
       <img slot="start" class="icon-destino" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
-      <ion-input class="destino-input" label="Destino" labelPlacement="stacked" [(ngModel)]="destino"
+      <ion-input #destinoInput class="destino-input" label="Destino" labelPlacement="stacked" [(ngModel)]="destino"
         placeholder="Ingrese el destino"></ion-input>
     </ion-item>
 
-    <ion-button expand="block" (click)="confirmarDestino()" [disabled]="!destino">
-      Confirmar Destino
-    </ion-button>
+    <div class="recent-destinations">
+      <div class="destination-item">
+        <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+        <span>Carrera 9 # 81b-23</span>
+      </div>
+      <div class="destination-item">
+        <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+        <span>Dg. 79a Bis #52-67</span>
+      </div>
+    </div>
   </div>
 </ion-content>
