@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { ModalAddressComponent } from '../modal-address/modal-address.component';
 import { MapaComponent } from '../mapa/mapa.component';
@@ -11,7 +11,10 @@ import { MapaComponent } from '../mapa/mapa.component';
   imports: [IonicModule, MapaComponent, ModalAddressComponent]
 })
 export class Tab2Page {
+  @ViewChild(MapaComponent) mapaComponent!: MapaComponent;
+
   currentAddress: string = '';
+  destinoSeleccionado: any;
 
   constructor(private modalCtrl: ModalController) { }
 
@@ -31,8 +34,14 @@ export class Tab2Page {
 
     const { data } = await modal.onWillDismiss();
     if (data) {
-      console.log('Destino seleccionado:', data.destino);
-      // Aquí puedes manejar el destino seleccionado
+      this.destinoSeleccionado = data;
+      this.trazarRuta();
+    }
+  }
+
+  trazarRuta() {
+    if (this.mapaComponent) {
+      this.mapaComponent.trazarRuta();
     }
   }
 }

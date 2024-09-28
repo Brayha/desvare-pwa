@@ -3,7 +3,7 @@
     <div class="header-mapa">
       <img src="../../assets/Logo.svg" alt="Desvare">
     </div>
-    <app-mapa (addressChanged)="onAddressChanged($event)"></app-mapa>
+    <app-mapa (addressChanged)="onAddressChanged($event)" [destinoSeleccionado]="destinoSeleccionado"></app-mapa>
     <div class="destination-card">
       <div class="input-search" (click)="abrirModalDestino()">
         <img src="assets/iconsax-svg/All/linear/search-normal-1.svg" alt="search">

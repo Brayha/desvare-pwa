@@ -1,6 +1,6 @@
 /// <reference types="@types/google.maps" />
 
-import { Component, OnInit, ViewChild, ElementRef,Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -13,9 +13,13 @@ import { CommonModule } from '@angular/common';
 export class MapaComponent implements OnInit {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
   @Output() addressChanged = new EventEmitter<string>();
+  @Input() destinoSeleccionado: any;
+
   private map!: google.maps.Map;
   private userMarker!: google.maps.Marker;
   private geocoder!: google.maps.Geocoder;
+  private directionsService!: google.maps.DirectionsService;
+  private directionsRenderer!: google.maps.DirectionsRenderer;
 
   private mapStyle = [
     {
@@ -54,8 +58,15 @@ export class MapaComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.initMap();
-    this.geocoder = new google.maps.Geocoder();
+    this.loadGoogleMaps().then(() => {
+      this.initMap();
+      this.geocoder = new google.maps.Geocoder();
+      this.directionsService = new google.maps.DirectionsService();
+      this.directionsRenderer = new google.maps.DirectionsRenderer();
+      this.directionsRenderer.setMap(this.map);
+    }).catch(error => {
+      console.error('Error al cargar Google Maps:', error);
+    });
   }
 
   initMap() {
@@ -69,6 +80,28 @@ export class MapaComponent implements OnInit {
 
     this.map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
     this.getUserLocation();
+  }
+
+  private loadGoogleMaps(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
+        resolve();
+      } else {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        document.body.appendChild(script);
+        script.onload = () => resolve();
+        script.onerror = () => reject('No se pudo cargar Google Maps');
+      }
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['destinoSeleccionado'] && !changes['destinoSeleccionado'].firstChange) {
+      this.trazarRuta();
+    }
   }
 
   getUserLocation() {
@@ -137,5 +170,21 @@ export class MapaComponent implements OnInit {
     console.warn(browserHasGeolocation ?
       'Error: El servicio de geolocalización falló.' :
       'Error: Tu navegador no soporta geolocalización.');
+  }
+
+  trazarRuta() {
+    if (!this.destinoSeleccionado || !this.userMarker) return;
+
+    const request: google.maps.DirectionsRequest = {
+      origin: this.userMarker.getPosition() as google.maps.LatLng,
+      destination: new google.maps.LatLng(this.destinoSeleccionado.lat, this.destinoSeleccionado.lng),
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+
+    this.directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        this.directionsRenderer.setDirections(result);
+      }
+    });
   }
 }

@@ -83,9 +83,13 @@ export class ModalAddressComponent implements OnInit {
   seleccionarLugar(place: google.maps.places.AutocompletePrediction) {
     this.placesService.getDetails({ placeId: place.place_id }, (result, status) => {
       this.ngZone.run(() => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          this.destino = result?.formatted_address || '';
-          this.sugerencias = [];
+        if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+          const direccionSeleccionada = {
+            direccion: result.formatted_address,
+            lat: result.geometry?.location?.lat(),
+            lng: result.geometry?.location?.lng()
+          };
+          this.modalCtrl.dismiss(direccionSeleccionada);
         }
       });
     });
