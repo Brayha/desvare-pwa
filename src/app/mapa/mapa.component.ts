@@ -17,6 +17,7 @@ export class MapaComponent implements OnInit {
 
   private map!: google.maps.Map;
   private userMarker!: google.maps.Marker;
+  private destinoMarker!: google.maps.Marker;
   private geocoder!: google.maps.Geocoder;
   private directionsService!: google.maps.DirectionsService;
   private directionsRenderer!: google.maps.DirectionsRenderer;
@@ -62,7 +63,12 @@ export class MapaComponent implements OnInit {
       this.initMap();
       this.geocoder = new google.maps.Geocoder();
       this.directionsService = new google.maps.DirectionsService();
-      this.directionsRenderer = new google.maps.DirectionsRenderer();
+      this.directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true,
+        polylineOptions: {
+          strokeColor: '#223D62'
+        }
+      });
       this.directionsRenderer.setMap(this.map);
     }).catch(error => {
       console.error('Error al cargar Google Maps:', error);
@@ -137,7 +143,6 @@ export class MapaComponent implements OnInit {
   }
 
   private obtenerPathDelSVG(): string {
-    // Este path representa un icono de ubicación más típico
     return 'M27.4933 11.2667C26.0933 5.10666 20.72 2.33333 16 2.33333C16 2.33333 16 2.33333 15.9867 2.33333C11.28 2.33333 5.89333 5.09333 4.49333 11.2533C2.93333 18.1333 7.14667 23.96 10.96 27.6267C12.3733 28.9867 14.1867 29.6667 16 29.6667C17.8133 29.6667 19.6267 28.9867 21.0267 27.6267C24.84 23.96 29.0533 18.1467 27.4933 11.2667ZM16 17.9467C13.68 17.9467 11.8 16.0667 11.8 13.7467C11.8 11.4267 13.68 9.54666 16 9.54666C18.32 9.54666 20.2 11.4267 20.2 13.7467C20.2 16.0667 18.32 17.9467 16 17.9467Z';
   }
 
@@ -150,7 +155,7 @@ export class MapaComponent implements OnInit {
 
     const icon = {
       url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" idth="32" height="32" viewBox="0 0 32 32" fill="none">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
         <path fill="#0055ff" d="${svgPath}" />
       </svg>
     `)}`,
@@ -184,7 +189,33 @@ export class MapaComponent implements OnInit {
     this.directionsService.route(request, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsRenderer.setDirections(result);
+        this.addDestinoMarker(new google.maps.LatLng(this.destinoSeleccionado.lat, this.destinoSeleccionado.lng));
       }
+    });
+  }
+
+  addDestinoMarker(position: google.maps.LatLng) {
+    if (this.destinoMarker) {
+      this.destinoMarker.setMap(null);
+    }
+
+    const svgPath = this.obtenerPathDelSVG();
+
+    const icon = {
+      url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <path fill="#FF5500" d="${svgPath}" />
+      </svg>
+    `)}`,
+      scaledSize: new google.maps.Size(32, 32),
+      anchor: new google.maps.Point(16, 32),
+    };
+
+    this.destinoMarker = new google.maps.Marker({
+      position: position,
+      map: this.map,
+      title: 'Destino',
+      icon: icon,
     });
   }
 }
