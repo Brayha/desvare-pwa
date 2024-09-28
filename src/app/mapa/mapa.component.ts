@@ -2,6 +2,7 @@
 
 import { Component, OnInit, ViewChild, ElementRef, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { decode } from '@googlemaps/polyline-codec';
 
 @Component({
   selector: 'app-mapa',
@@ -57,6 +58,8 @@ export class MapaComponent implements OnInit {
       "stylers": [{ "color": "#c9c9c9" }]
     }
   ];
+
+  private animatedPolyline: google.maps.Polyline | null = null;
 
   ngOnInit() {
     this.loadGoogleMaps().then(() => {
@@ -177,23 +180,6 @@ export class MapaComponent implements OnInit {
       'Error: Tu navegador no soporta geolocalización.');
   }
 
-  trazarRuta() {
-    if (!this.destinoSeleccionado || !this.userMarker) return;
-
-    const request: google.maps.DirectionsRequest = {
-      origin: this.userMarker.getPosition() as google.maps.LatLng,
-      destination: new google.maps.LatLng(this.destinoSeleccionado.lat, this.destinoSeleccionado.lng),
-      travelMode: google.maps.TravelMode.DRIVING
-    };
-
-    this.directionsService.route(request, (result, status) => {
-      if (status === google.maps.DirectionsStatus.OK) {
-        this.directionsRenderer.setDirections(result);
-        this.addDestinoMarker(new google.maps.LatLng(this.destinoSeleccionado.lat, this.destinoSeleccionado.lng));
-      }
-    });
-  }
-
   addDestinoMarker(position: google.maps.LatLng) {
     if (this.destinoMarker) {
       this.destinoMarker.setMap(null);
@@ -217,5 +203,71 @@ export class MapaComponent implements OnInit {
       title: 'Destino',
       icon: icon,
     });
+  }
+
+  trazarRuta() {
+    if (!this.destinoSeleccionado || !this.userMarker) return;
+
+    const destino = new google.maps.LatLng(this.destinoSeleccionado.lat, this.destinoSeleccionado.lng);
+
+    // Añadir el marcador de destino
+    this.addDestinoMarker(destino);
+
+    const request: google.maps.DirectionsRequest = {
+      origin: this.userMarker.getPosition() as google.maps.LatLng,
+      destination: destino,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+
+    this.directionsService.route(request, (result, status) => {
+      if (status === 'OK' && result) {
+        // No renderizamos la ruta con directionsRenderer
+        // this.directionsRenderer.setDirections(result);
+
+        // En su lugar, solo animamos la ruta
+        this.animateRoute(result);
+      } else {
+        console.error('No se pudo trazar la ruta:', status);
+      }
+    });
+  }
+
+  private animateRoute(result: google.maps.DirectionsResult) {
+    const route = result.routes[0].overview_polyline;
+    const decodedPath = decode(route);
+  
+    if (this.animatedPolyline) {
+      this.animatedPolyline.setMap(null);
+    }
+  
+    this.animatedPolyline = new google.maps.Polyline({
+      path: [],
+      geodesic: true,
+      strokeColor: '#223D62',
+      strokeOpacity: 0.8,
+      strokeWeight: 5,
+      map: this.map
+    });
+  
+    let index = 0;
+    const step = 3; // Aumenta este valor para una animación más rápida
+    const animationStep = () => {
+      if (index < decodedPath.length) {
+        const segment = decodedPath.slice(0, index + 1);
+        this.animatedPolyline!.setPath(segment.map(point => ({ lat: point[0], lng: point[1] })));
+        index += step; // Incrementamos el índice por el valor de step en cada iteración
+        requestAnimationFrame(animationStep);
+      } else {
+        // Cuando la animación termina, dibujamos la ruta completa
+        this.animatedPolyline!.setPath(decodedPath.map(point => ({ lat: point[0], lng: point[1] })));
+      }
+    };
+  
+    animationStep();
+  
+    // Ajustar el mapa para que muestre toda la ruta
+    const bounds = new google.maps.LatLngBounds();
+    result.routes[0].overview_path.forEach((point) => bounds.extend(point));
+    this.map.fitBounds(bounds);
   }
 }
