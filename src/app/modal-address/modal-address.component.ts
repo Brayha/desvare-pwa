@@ -26,21 +26,18 @@ export class ModalAddressComponent implements OnInit {
   private searchSubjectDestino: Subject<string> = new Subject<string>();
   private searchSubjectOrigen: Subject<string> = new Subject<string>();
 
-  // Definimos los límites de Colombia
   private colombiaBounds: google.maps.LatLngBounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(-4.2316872, -82.1243666), // Esquina suroeste
-    new google.maps.LatLng(13.3805948, -66.8511907)  // Esquina noreste
+    new google.maps.LatLng(-4.2316872, -82.1243666),
+    new google.maps.LatLng(13.3805948, -66.8511907)
   );
 
-  limpiarInput(tipo: 'origen' | 'destino') {
-    if (tipo === 'origen') {
-      this.origen = '';
-      this.sugerenciasOrigen = [];
-    } else {
-      this.destino = '';
-      this.sugerenciasDestino = [];
-    }
-  }
+  sugerenciasIniciales: string[] = [
+    'Parque Simón Bolívar',
+    'Centro Comercial Andino',
+    'Aeropuerto El Dorado',
+    'Universidad Nacional de Colombia',
+    'Monserrate'
+  ];
 
   constructor(private modalCtrl: ModalController, private ngZone: NgZone) {
     this.autocompleteService = new google.maps.places.AutocompleteService();
@@ -63,6 +60,7 @@ export class ModalAddressComponent implements OnInit {
     ).subscribe((query: string) => {
       this.buscarLugares(query, 'origen');
     });
+    this.mostrarSugerenciasIniciales();
   }
 
   ionViewDidEnter() {
@@ -71,8 +69,28 @@ export class ModalAddressComponent implements OnInit {
     }, 150);
   }
 
+  mostrarSugerenciasIniciales() {
+    this.sugerenciasDestino = this.sugerenciasIniciales.map(sugerencia => ({
+      description: sugerencia,
+      structured_formatting: {
+        main_text: sugerencia,
+        secondary_text: 'Sugerencia'
+      }
+    } as google.maps.places.AutocompletePrediction));
+  }
+
   dismiss() {
     this.modalCtrl.dismiss();
+  }
+
+  limpiarInput(tipo: 'origen' | 'destino') {
+    if (tipo === 'origen') {
+      this.origen = '';
+      this.sugerenciasOrigen = [];
+    } else {
+      this.destino = '';
+      this.mostrarSugerenciasIniciales();
+    }
   }
 
   onSearchChangeDestino(event: any) {
@@ -80,7 +98,7 @@ export class ModalAddressComponent implements OnInit {
     if (query) {
       this.searchSubjectDestino.next(query);
     } else {
-      this.sugerenciasDestino = [];
+      this.mostrarSugerenciasIniciales();
     }
   }
 
@@ -113,7 +131,7 @@ export class ModalAddressComponent implements OnInit {
       });
     } else {
       if (tipo === 'destino') {
-        this.sugerenciasDestino = [];
+        this.mostrarSugerenciasIniciales();
       } else {
         this.sugerenciasOrigen = [];
       }
@@ -136,7 +154,6 @@ export class ModalAddressComponent implements OnInit {
             this.origen = direccionSeleccionada.direccion;
             this.sugerenciasOrigen = [];
           }
-          // Cerrar el modal y devolver las direcciones seleccionadas
           this.modalCtrl.dismiss({
             origen: this.origen,
             destino: this.destino,
