@@ -22,6 +22,12 @@ export class ModalAddressComponent implements OnInit {
   sugerencias: google.maps.places.AutocompletePrediction[] = [];
   private searchSubject: Subject<string> = new Subject<string>();
 
+  // Definimos los límites de Colombia
+  private colombiaBounds: google.maps.LatLngBounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(-4.2316872, -82.1243666), // Esquina suroeste
+    new google.maps.LatLng(13.3805948, -66.8511907)  // Esquina noreste
+  );
+
   constructor(private modalCtrl: ModalController, private ngZone: NgZone) {
     this.autocompleteService = new google.maps.places.AutocompleteService();
     this.placesService = new google.maps.places.PlacesService(document.createElement('div'));
@@ -57,7 +63,14 @@ export class ModalAddressComponent implements OnInit {
 
   private buscarLugares(query: string) {
     if (query && query.length > 0) {
-      this.autocompleteService.getPlacePredictions({ input: query }, (predictions, status) => {
+      const request: google.maps.places.AutocompletionRequest = {
+        input: query,
+        bounds: this.colombiaBounds,
+        componentRestrictions: { country: 'CO' },
+        types: ['geocode', 'establishment']
+      };
+
+      this.autocompleteService.getPlacePredictions(request, (predictions, status) => {
         this.ngZone.run(() => {
           this.sugerencias = status === google.maps.places.PlacesServiceStatus.OK ? predictions || [] : [];
         });
