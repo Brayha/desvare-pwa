@@ -180,6 +180,11 @@ export class MapaComponent implements OnInit {
       'Error: Tu navegador no soporta geolocalización.');
   }
 
+  actualizarPosicionUsuario(posicion: google.maps.LatLngLiteral) {
+    this.addUserMarker(posicion);
+    this.map.setCenter(posicion);
+  }
+
   addDestinoMarker(position: google.maps.LatLng) {
     if (this.destinoMarker) {
       this.destinoMarker.setMap(null);

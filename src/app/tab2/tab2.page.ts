@@ -38,7 +38,7 @@ export class Tab2Page {
       component: ModalAddressComponent,
       componentProps: {
         origen: this.currentAddress,
-        destinoActual: this.destinoSeleccionado?.address // Añade esta línea
+        destinoActual: this.destinoSeleccionado?.address
       }
     });
 
@@ -47,14 +47,28 @@ export class Tab2Page {
     await modal.present();
 
     const { data } = await modal.onWillDismiss();
-    if (data) {
+  if (data) {
+    let actualizarRuta = false;
+
+    if (data.origenLat && data.origenLng) {
+      this.currentAddress = data.origen;
+      // Actualizar la posición del usuario en el mapa
+      this.mapaComponent.actualizarPosicionUsuario({lat: data.origenLat, lng: data.origenLng});
+      actualizarRuta = true;
+    }
+    if (data.destinoLat && data.destinoLng) {
       this.destinoSeleccionado = {
-        address: data.direccion,
-        lat: data.lat,
-        lng: data.lng
+        address: data.destino,
+        lat: data.destinoLat,
+        lng: data.destinoLng
       };
       this.mostrarBusqueda = false;
+      actualizarRuta = true;
+    }
+
+    if (actualizarRuta && this.destinoSeleccionado) {
       this.trazarRuta();
+    }
     }
   }
 

@@ -136,7 +136,15 @@ export class ModalAddressComponent implements OnInit {
             this.origen = direccionSeleccionada.direccion;
             this.sugerenciasOrigen = [];
           }
-          // No cerramos el modal aquí para permitir cambios en ambos campos
+          // Cerrar el modal y devolver las direcciones seleccionadas
+          this.modalCtrl.dismiss({
+            origen: this.origen,
+            destino: this.destino,
+            origenLat: tipo === 'origen' ? direccionSeleccionada.lat : undefined,
+            origenLng: tipo === 'origen' ? direccionSeleccionada.lng : undefined,
+            destinoLat: tipo === 'destino' ? direccionSeleccionada.lat : undefined,
+            destinoLng: tipo === 'destino' ? direccionSeleccionada.lng : undefined
+          });
         }
       });
     });
