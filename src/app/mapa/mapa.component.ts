@@ -97,7 +97,7 @@ export class MapaComponent implements OnInit {
         resolve();
       } else {
         const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&libraries=places`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBN5p__XaxQNcBAjFDOWtSdDaZaZ-yR4CI&libraries=places`;
         script.async = true;
         script.defer = true;
         document.body.appendChild(script);

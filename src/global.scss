@@ -72,7 +72,21 @@ ion-input, ion-label {
   font-family: 'Gilroy', sans-serif !important;
 }
 
+ion-button {
+  font-family: 'Gilroy', sans-serif !important;
+  font-weight: 800;
+  font-size: 18px;
+}
+
 // Aplicar Gilroy al texto del placeholder
 input::placeholder {
   font-family: 'Gilroy', sans-serif !important;
+}
+
+.custom-border-item {
+  --border-color: #F3F4F6;
+}
+
+ion-item {
+  --border-color: #F3F4F6 !important;
 }

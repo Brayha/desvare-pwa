@@ -14,6 +14,7 @@ import { Subject } from 'rxjs';
 })
 export class ModalAddressComponent implements OnInit {
   @Input() origen: string = '';
+  @Input() destinoActual: string = ''; // Añade esta línea
   destino: string = '';
   @ViewChild('destinoInput', { static: false }) destinoInput!: IonInput;
 
@@ -34,6 +35,9 @@ export class ModalAddressComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.destinoActual) {
+      this.destino = this.destinoActual;
+    }
     this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged()
@@ -83,12 +87,13 @@ export class ModalAddressComponent implements OnInit {
   seleccionarLugar(place: google.maps.places.AutocompletePrediction) {
     this.placesService.getDetails({ placeId: place.place_id }, (result, status) => {
       this.ngZone.run(() => {
-        if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+        if (status === google.maps.places.PlacesServiceStatus.OK && result && result.formatted_address) {
           const direccionSeleccionada = {
             direccion: result.formatted_address,
-            lat: result.geometry?.location?.lat(),
-            lng: result.geometry?.location?.lng()
+            lat: result.geometry?.location?.lat() ?? 0,
+            lng: result.geometry?.location?.lng() ?? 0
           };
+          this.destino = direccionSeleccionada.direccion;
           this.modalCtrl.dismiss(direccionSeleccionada);
         }
       });

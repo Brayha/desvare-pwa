@@ -15,8 +15,9 @@
 
     <ion-item class="input-address custom-input" lines="none" mode="ios">
       <img slot="start" class="icon-destino" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
-      <ion-input #destinoInput label="Destino" label-placement="floating" [(ngModel)]="destino" (ionInput)="onSearchChange($event)"
-        placeholder="Ingrese el destino"  fill="outline" class="no-border">
+      <ion-input #destinoInput label="Destino" label-placement="floating" [(ngModel)]="destino"
+        (ionInput)="onSearchChange($event)" (ionChange)="onSearchChange($event)" placeholder="Ingrese el destino"
+        fill="outline" class="no-border">
       </ion-input>
     </ion-item>
 

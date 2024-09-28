@@ -5,20 +5,56 @@
     </div>
     <app-mapa (addressChanged)="onAddressChanged($event)" [destinoSeleccionado]="destinoSeleccionado"></app-mapa>
     <div class="destination-card">
-      <div class="input-search" (click)="abrirModalDestino()">
-        <img src="assets/iconsax-svg/All/linear/search-normal-1.svg" alt="search">
-        <p>¿A dónde vamos?</p>
-      </div>
-      <div class="recent-destinations">
-        <div class="destination-item">
-          <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
-          <span>Carrera 9 # 81b-23</span>
+      <ng-container *ngIf="mostrarBusqueda; else rutaConfirmada">
+        <div class="input-search-container">
+          <div class="input-search" (click)="abrirModalDestino()">
+            <img src="assets/iconsax-svg/All/linear/search-normal-1.svg" alt="search">
+            <p>¿A dónde vamos?</p>
+          </div>
+          <div class="recent-destinations">
+            <div class="destination-item">
+              <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+              <span>Carrera 9 # 81b-23</span>
+            </div>
+            <div class="destination-item">
+              <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+              <span>Dg. 79a Bis #52-67</span>
+            </div>
+          </div>
         </div>
-        <div class="destination-item">
-          <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
-          <span>Dg. 79a Bis #52-67</span>
+      </ng-container>
+      
+      <ng-template #rutaConfirmada>
+        <div class="destination-card-ruter">
+          <ion-list>
+            <ion-item lines="none" class="ion-no-margin ion-no-padding custom-item-right">
+              <ion-label>
+                <h2>Confirma el trayecto</h2>
+              </ion-label>
+              <ion-button slot="end" fill="clear" size="medium" class="edit-button" (click)="abrirModalDestino()">
+                Editar
+              </ion-button>
+            </ion-item>
+            <ion-item class="ion-no-margin ion-no-padding">
+              <img slot="start" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+              <ion-label>
+                <p>Origen:</p>
+                <h3>{{ currentAddress }}</h3>
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none" class="ion-no-margin ion-no-padding">
+              <img slot="start" class="icon-destino" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+              <ion-label>
+                <p>Destino:</p>
+                <h3>{{ destinoSeleccionado?.address }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-button mode="ios" expand="block">
+            Confirmar
+          </ion-button>
         </div>
-      </div>
+      </ng-template>
     </div>
   </div>
 </ion-content>
