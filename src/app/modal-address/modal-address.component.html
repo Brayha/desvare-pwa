@@ -7,7 +7,6 @@
 
 <ion-content>
   <div class="content-address">
-
     <ion-item class="input-address" lines="none" mode="ios">
       <img slot="start" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
       <ion-input class="no-border" label="Origen" label-placement="floating" fill="outline" placeholder="Enter text"
@@ -16,19 +15,18 @@
 
     <ion-item class="input-address custom-input" lines="none" mode="ios">
       <img slot="start" class="icon-destino" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
-      <ion-input #destinoInput class="destino-input" label="Destino" labelPlacement="stacked" [(ngModel)]="destino"
-        placeholder="Ingrese el destino"></ion-input>
+      <ion-input #destinoInput label="Destino" label-placement="floating" [(ngModel)]="destino" (ionInput)="onSearchChange($event)"
+        placeholder="Ingrese el destino"  fill="outline" class="no-border">
+      </ion-input>
     </ion-item>
 
-    <div class="recent-destinations">
-      <div class="destination-item">
-        <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
-        <span>Carrera 9 # 81b-23</span>
-      </div>
-      <div class="destination-item">
-        <img src="assets/iconsax-svg/All/bold/location.svg" alt="location">
-        <span>Dg. 79a Bis #52-67</span>
-      </div>
-    </div>
+    <ion-list *ngIf="sugerencias.length > 0">
+      <ion-item *ngFor="let sugerencia of sugerencias" (click)="seleccionarLugar(sugerencia)">
+        <ion-label>
+          <h2>{{ sugerencia.structured_formatting.main_text }}</h2>
+          <p>{{ sugerencia.structured_formatting.secondary_text }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
