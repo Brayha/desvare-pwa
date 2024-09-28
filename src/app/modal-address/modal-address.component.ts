@@ -14,20 +14,33 @@ import { Subject } from 'rxjs';
 })
 export class ModalAddressComponent implements OnInit {
   @Input() origen: string = '';
-  @Input() destinoActual: string = ''; // Añade esta línea
+  @Input() destinoActual: string = '';
   destino: string = '';
   @ViewChild('destinoInput', { static: false }) destinoInput!: IonInput;
+  @ViewChild('origenInput', { static: false }) origenInput!: IonInput;
 
   private autocompleteService: google.maps.places.AutocompleteService;
   private placesService: google.maps.places.PlacesService;
-  sugerencias: google.maps.places.AutocompletePrediction[] = [];
-  private searchSubject: Subject<string> = new Subject<string>();
+  sugerenciasDestino: google.maps.places.AutocompletePrediction[] = [];
+  sugerenciasOrigen: google.maps.places.AutocompletePrediction[] = [];
+  private searchSubjectDestino: Subject<string> = new Subject<string>();
+  private searchSubjectOrigen: Subject<string> = new Subject<string>();
 
   // Definimos los límites de Colombia
   private colombiaBounds: google.maps.LatLngBounds = new google.maps.LatLngBounds(
     new google.maps.LatLng(-4.2316872, -82.1243666), // Esquina suroeste
     new google.maps.LatLng(13.3805948, -66.8511907)  // Esquina noreste
   );
+
+  limpiarInput(tipo: 'origen' | 'destino') {
+    if (tipo === 'origen') {
+      this.origen = '';
+      this.sugerenciasOrigen = [];
+    } else {
+      this.destino = '';
+      this.sugerenciasDestino = [];
+    }
+  }
 
   constructor(private modalCtrl: ModalController, private ngZone: NgZone) {
     this.autocompleteService = new google.maps.places.AutocompleteService();
@@ -38,11 +51,17 @@ export class ModalAddressComponent implements OnInit {
     if (this.destinoActual) {
       this.destino = this.destinoActual;
     }
-    this.searchSubject.pipe(
+    this.searchSubjectDestino.pipe(
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe((query: string) => {
-      this.buscarLugares(query);
+      this.buscarLugares(query, 'destino');
+    });
+    this.searchSubjectOrigen.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe((query: string) => {
+      this.buscarLugares(query, 'origen');
     });
   }
 
@@ -56,16 +75,25 @@ export class ModalAddressComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  onSearchChange(event: any) {
+  onSearchChangeDestino(event: any) {
     const query = event.detail.value;
     if (query) {
-      this.searchSubject.next(query);
+      this.searchSubjectDestino.next(query);
     } else {
-      this.sugerencias = [];
+      this.sugerenciasDestino = [];
     }
   }
 
-  private buscarLugares(query: string) {
+  onSearchChangeOrigen(event: any) {
+    const query = event.detail.value;
+    if (query) {
+      this.searchSubjectOrigen.next(query);
+    } else {
+      this.sugerenciasOrigen = [];
+    }
+  }
+
+  private buscarLugares(query: string, tipo: 'origen' | 'destino') {
     if (query && query.length > 0) {
       const request: google.maps.places.AutocompletionRequest = {
         input: query,
@@ -76,15 +104,23 @@ export class ModalAddressComponent implements OnInit {
 
       this.autocompleteService.getPlacePredictions(request, (predictions, status) => {
         this.ngZone.run(() => {
-          this.sugerencias = status === google.maps.places.PlacesServiceStatus.OK ? predictions || [] : [];
+          if (tipo === 'destino') {
+            this.sugerenciasDestino = status === google.maps.places.PlacesServiceStatus.OK ? predictions || [] : [];
+          } else {
+            this.sugerenciasOrigen = status === google.maps.places.PlacesServiceStatus.OK ? predictions || [] : [];
+          }
         });
       });
     } else {
-      this.sugerencias = [];
+      if (tipo === 'destino') {
+        this.sugerenciasDestino = [];
+      } else {
+        this.sugerenciasOrigen = [];
+      }
     }
   }
 
-  seleccionarLugar(place: google.maps.places.AutocompletePrediction) {
+  seleccionarLugar(place: google.maps.places.AutocompletePrediction, tipo: 'origen' | 'destino') {
     this.placesService.getDetails({ placeId: place.place_id }, (result, status) => {
       this.ngZone.run(() => {
         if (status === google.maps.places.PlacesServiceStatus.OK && result && result.formatted_address) {
@@ -93,10 +129,23 @@ export class ModalAddressComponent implements OnInit {
             lat: result.geometry?.location?.lat() ?? 0,
             lng: result.geometry?.location?.lng() ?? 0
           };
-          this.destino = direccionSeleccionada.direccion;
-          this.modalCtrl.dismiss(direccionSeleccionada);
+          if (tipo === 'destino') {
+            this.destino = direccionSeleccionada.direccion;
+            this.sugerenciasDestino = [];
+          } else {
+            this.origen = direccionSeleccionada.direccion;
+            this.sugerenciasOrigen = [];
+          }
+          // No cerramos el modal aquí para permitir cambios en ambos campos
         }
       });
+    });
+  }
+
+  confirmarDirecciones() {
+    this.modalCtrl.dismiss({
+      origen: this.origen,
+      destino: this.destino
     });
   }
 }

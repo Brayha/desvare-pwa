@@ -159,11 +159,3 @@ app-mapa {
     color: #9CA3AF;
   }
 }
-
-.custom-item-right {
-  --inner-padding-end: 0;
-
-  ::ng-deep .item-inner {
-    padding-right: 0 !important;
-  }
-}

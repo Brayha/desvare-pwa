@@ -90,3 +90,11 @@ input::placeholder {
 ion-item {
   --border-color: #F3F4F6 !important;
 }
+
+.custom-item-right {
+  --inner-padding-end: 0;
+
+  ::ng-deep .item-inner {
+    padding-right: 0 !important;
+  }
+}

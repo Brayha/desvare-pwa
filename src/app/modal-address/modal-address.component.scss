@@ -12,6 +12,10 @@
     }
 }
 
+.icon-close {
+    filter: invert(93%) sepia(7%) saturate(202%) hue-rotate(185deg) brightness(92%) contrast(87%);
+}
+
 .content-address {
     padding: 16px;
     display: block;
@@ -124,37 +128,37 @@
 
 .recent-destinations {
     .destination-item {
-      display: flex;
-      padding: var(--Padding-16, 16px) var(--Padding-16, 16px) var(--Padding-16, 16px) 0px;
-      align-items: center;
-      gap: var(--Padding-10, 10px);
-      flex: 1 0 0;
-      border-bottom: 1px solid var(--Tailwind-gray-100, #F3F4F6);
-  
-      img {
         display: flex;
-        width: var(--Padding-24, 24px);
-        height: var(--Padding-24, 24px);
-        justify-content: center;
+        padding: var(--Padding-16, 16px) var(--Padding-16, 16px) var(--Padding-16, 16px) 0px;
         align-items: center;
-        filter: brightness(0) saturate(100%) invert(86%) sepia(8%) saturate(157%) hue-rotate(176deg) brightness(88%) contrast(84%);
-      }
-  
-      span {
-        overflow: hidden;
-        color: var(--Tailwind-gray-600, #4B5563);
-        text-overflow: ellipsis;
-  
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-  
-        /* Text/Base */
-        font-family: Gilroy;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-      }
+        gap: var(--Padding-10, 10px);
+        flex: 1 0 0;
+        border-bottom: 1px solid var(--Tailwind-gray-100, #F3F4F6);
+
+        img {
+            display: flex;
+            width: var(--Padding-24, 24px);
+            height: var(--Padding-24, 24px);
+            justify-content: center;
+            align-items: center;
+            filter: brightness(0) saturate(100%) invert(86%) sepia(8%) saturate(157%) hue-rotate(176deg) brightness(88%) contrast(84%);
+        }
+
+        span {
+            overflow: hidden;
+            color: var(--Tailwind-gray-600, #4B5563);
+            text-overflow: ellipsis;
+
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+
+            /* Text/Base */
+            font-family: Gilroy;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
     }
-  }
+}

@@ -7,27 +7,40 @@
 
 <ion-content>
   <div class="content-address">
-    <ion-item class="input-address" lines="none" mode="ios">
+    <ion-item class="input-address custom-input custom-item-right" lines="none" mode="ios">
       <img slot="start" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
-      <ion-input class="no-border" label="Origen" label-placement="floating" fill="outline" placeholder="Enter text"
-        [value]="origen"></ion-input>
+      <ion-input #origenInput class="no-border" label="Origen" label-placement="floating" fill="outline" 
+        [(ngModel)]="origen" (ionInput)="onSearchChangeOrigen($event)" (ionChange)="onSearchChangeOrigen($event)"
+        placeholder="Ingrese el origen"></ion-input>
+      <img *ngIf="origen" slot="end" class="icon-close" src="../../assets/iconsax-svg/All/bold/close-circle.svg" alt="close" (click)="limpiarInput('origen')" style="filter: invert(93%) sepia(7%) saturate(202%) hue-rotate(185deg) brightness(92%) contrast(87%);">
     </ion-item>
 
-    <ion-item class="input-address custom-input" lines="none" mode="ios">
+    <ion-item class="input-address custom-input custom-item-right" lines="none" mode="ios">
       <img slot="start" class="icon-destino" src="../../assets/iconsax-svg/All/bold/location.svg" alt="location">
       <ion-input #destinoInput label="Destino" label-placement="floating" [(ngModel)]="destino"
-        (ionInput)="onSearchChange($event)" (ionChange)="onSearchChange($event)" placeholder="Ingrese el destino"
-        fill="outline" class="no-border">
+        (ionInput)="onSearchChangeDestino($event)" (ionChange)="onSearchChangeDestino($event)" 
+        placeholder="Ingrese el destino" fill="outline" class="no-border">
       </ion-input>
+      <img *ngIf="destino" slot="end" class="icon-close" src="../../assets/iconsax-svg/All/bold/close-circle.svg" alt="close" (click)="limpiarInput('destino')" style="filter: invert(93%) sepia(7%) saturate(202%) hue-rotate(185deg) brightness(92%) contrast(87%);">
     </ion-item>
 
-    <ion-list *ngIf="sugerencias.length > 0">
-      <ion-item *ngFor="let sugerencia of sugerencias" (click)="seleccionarLugar(sugerencia)">
+    <ion-list *ngIf="sugerenciasOrigen.length > 0">
+      <ion-item *ngFor="let sugerencia of sugerenciasOrigen" (click)="seleccionarLugar(sugerencia, 'origen')">
         <ion-label>
           <h2>{{ sugerencia.structured_formatting.main_text }}</h2>
           <p>{{ sugerencia.structured_formatting.secondary_text }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
+
+    <ion-list *ngIf="sugerenciasDestino.length > 0">
+      <ion-item *ngFor="let sugerencia of sugerenciasDestino" (click)="seleccionarLugar(sugerencia, 'destino')">
+        <ion-label>
+          <h2>{{ sugerencia.structured_formatting.main_text }}</h2>
+          <p>{{ sugerencia.structured_formatting.secondary_text }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
   </div>
 </ion-content>
