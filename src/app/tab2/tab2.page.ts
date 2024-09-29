@@ -3,13 +3,14 @@ import { IonicModule, ModalController } from '@ionic/angular';
 import { ModalAddressComponent } from '../modal-address/modal-address.component';
 import { MapaComponent } from '../mapa/mapa.component';
 import { CommonModule } from '@angular/common';
+import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
-  imports: [IonicModule, MapaComponent, ModalAddressComponent, CommonModule]
+  imports: [IonicModule, MapaComponent, ModalAddressComponent, CommonModule, AuthModalComponent]
 })
 export class Tab2Page {
   @ViewChild(MapaComponent) mapaComponent!: MapaComponent;
@@ -23,10 +24,23 @@ export class Tab2Page {
   direccionOrigen: string = '';
   mostrarBusqueda: boolean = true;
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private modalController: ModalController) { }
 
   ngOnInit() {
     this.mostrarBusqueda = true;
+  }
+
+  async iniciarProceso() {
+    const modal = await this.modalController.create({
+      component: AuthModalComponent,
+      cssClass: 'my-custom-class'
+    });
+    await modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'confirm') {
+      // Manejar la confirmación si es necesario
+    }
   }
 
   onAddressChanged(address: string) {
@@ -47,28 +61,28 @@ export class Tab2Page {
     await modal.present();
 
     const { data } = await modal.onWillDismiss();
-  if (data) {
-    let actualizarRuta = false;
+    if (data) {
+      let actualizarRuta = false;
 
-    if (data.origenLat && data.origenLng) {
-      this.currentAddress = data.origen;
-      // Actualizar la posición del usuario en el mapa
-      this.mapaComponent.actualizarPosicionUsuario({lat: data.origenLat, lng: data.origenLng});
-      actualizarRuta = true;
-    }
-    if (data.destinoLat && data.destinoLng) {
-      this.destinoSeleccionado = {
-        address: data.destino,
-        lat: data.destinoLat,
-        lng: data.destinoLng
-      };
-      this.mostrarBusqueda = false;
-      actualizarRuta = true;
-    }
+      if (data.origenLat && data.origenLng) {
+        this.currentAddress = data.origen;
+        // Actualizar la posición del usuario en el mapa
+        this.mapaComponent.actualizarPosicionUsuario({ lat: data.origenLat, lng: data.origenLng });
+        actualizarRuta = true;
+      }
+      if (data.destinoLat && data.destinoLng) {
+        this.destinoSeleccionado = {
+          address: data.destino,
+          lat: data.destinoLat,
+          lng: data.destinoLng
+        };
+        this.mostrarBusqueda = false;
+        actualizarRuta = true;
+      }
 
-    if (actualizarRuta && this.destinoSeleccionado) {
-      this.trazarRuta();
-    }
+      if (actualizarRuta && this.destinoSeleccionado) {
+        this.trazarRuta();
+      }
     }
   }
 
