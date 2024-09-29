@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, ModalController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./auth-modal.component.scss']
 })
 export class AuthModalComponent {
+  constructor(private modalController: ModalController) { }
+
   segmentValue: string = 'register';
   vehicles = [
     { name: 'Motocicleta', description: 'Vehículos de 2 ruedas', icon: '/assets/icon-vehicle-type/Moto.svg' },
@@ -20,4 +22,10 @@ export class AuthModalComponent {
     { name: 'Autobus', description: 'Transporte urbano e intermunicipal', icon: '/assets/icon-vehicle-type/Autobus.svg' },
     { name: 'Otra carga', description: 'Trasteos, maquinaria, etc...', icon: '/assets/icon-vehicle-type/Otra.svg' }
   ];
+
+  dismissModal() {
+    this.modalController.dismiss();
+  }
+
+
 }

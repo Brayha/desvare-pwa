@@ -4,6 +4,7 @@ import { ModalAddressComponent } from '../modal-address/modal-address.component'
 import { MapaComponent } from '../mapa/mapa.component';
 import { CommonModule } from '@angular/common';
 import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -24,23 +25,20 @@ export class Tab2Page {
   direccionOrigen: string = '';
   mostrarBusqueda: boolean = true;
 
-  constructor(private modalCtrl: ModalController, private modalController: ModalController) { }
+  constructor(private modalCtrl: ModalController, private modalController: ModalController, private router: Router) { }
 
   ngOnInit() {
     this.mostrarBusqueda = true;
   }
+  
 
   async iniciarProceso() {
     const modal = await this.modalController.create({
       component: AuthModalComponent,
-      cssClass: 'my-custom-class'
+      breakpoints: [0, 0.5, 0.8, 1],
+      initialBreakpoint: 0.5
     });
     await modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-    if (role === 'confirm') {
-      // Manejar la confirmación si es necesario
-    }
   }
 
   onAddressChanged(address: string) {

@@ -79,6 +79,30 @@ ion-button {
   font-size: 18px;
 }
 
+ion-segment {
+  font-family: 'Gilroy', sans-serif !important;
+  background-color: #F3F4F6;
+  --background: #F3F4F6;
+
+  ion-segment-button {
+    padding: 10px;
+    --color: #9CA3AF;  // Color por defecto
+    --color-checked: #4B5563;  // Color cuando está activo
+    font-weight: 600;
+  }
+
+  ion-label {
+    font-size: 16px;
+    color: #9CA3AF;
+  }
+
+  .segment-button-checked {
+    ion-label {
+      color: #4B5563;  // Asegura que el color se aplique también al texto dentro del label
+    }
+  }
+}
+
 // Aplicar Gilroy al texto del placeholder
 input::placeholder {
   font-family: 'Gilroy', sans-serif !important;
@@ -97,5 +121,60 @@ ion-item {
 
   ::ng-deep .item-inner {
     padding-right: 0 !important;
+  }
+}
+
+.input-desvare {
+  padding: 10px 0;
+  margin-bottom: 16px;
+  display: block;
+  --background: #fff;
+  background-color: #fff;
+  border-radius: var(--Padding-24, 24px);
+  border: 1px solid var(--Tailwind-gray-200, #E5E7EB);
+  background: var(--Tailwind-white, #FFF);
+  transition: box-shadow 0.3s ease; // Añade una transición suave
+
+  &.item-has-focus {
+      box-shadow: 0 0 0 3px rgba(34, 61, 98, 0.5); // Sombra naranja cuando está en focus
+      border-color: #223D62; // Cambia el color del borde a naranja
+  }
+
+  img {
+      width: 24px;
+      height: 24px;
+      display: block;
+      margin: auto;
+      margin-right: 10px;
+      filter: invert(68%) sepia(13%) saturate(246%) hue-rotate(176deg) brightness(92%) contrast(87%);
+  }
+
+  ion-label {
+      font-family: 'Gilroy', sans-serif;
+      margin: 0;
+      color: #9CA3AF;
+      font-weight: 800 !important;
+  }
+
+  ion-input {
+      font-family: 'Gilroy', sans-serif;
+      color: #000;
+      font-weight: 400;
+      --placeholder-font-family: 'Gilroy', sans-serif;
+      --label-font-weight: 600 !important; // Añadido para asegurar que el label sea semibold
+      --placeholder-font-weight: 600 !important;
+  }
+  
+  .destino-input {
+      &.ion-focused {
+          --color: #223D62; // Cambia el color del texto a naranja cuando está enfocado
+          --placeholder-color: rgba(34, 61, 98, 0.5); // Cambia el color del placeholder
+      }
+  }
+
+  &.item-has-focus {
+      ion-label {
+          color: #223D62; // Cambia el color del label a naranja cuando está enfocado
+      }
   }
 }

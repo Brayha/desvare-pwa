@@ -1,0 +1,55 @@
+.custom-sheet-modal {
+    --height: auto;
+    --max-height: 90%;
+}
+
+.container-auth {
+    font-family: 'Gilroy', sans-serif !important;
+    padding: 16px 0;
+
+    .title-register {
+        font-size: 24px;
+        font-weight: 800;
+        color: #223D62;
+    }
+
+    h2 {
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #4B5563;
+    }
+
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #4B5563;
+    }
+}
+
+.login-container {
+
+    h2 {
+        color: var(--ion-color-secondary);
+        text-align: center;
+        font-family: 'Gilroy', sans-serif !important;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    p {
+        color: #6B7280;
+        text-align: center;
+        font-family: 'Gilroy', sans-serif !important;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+}
