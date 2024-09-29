@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 export class AuthModalComponent {
   constructor(private modalController: ModalController) { }
   showOtp: boolean = false;
+  logeado: boolean = false;
+
 
   segmentValue: string = 'register';
   vehicles = [

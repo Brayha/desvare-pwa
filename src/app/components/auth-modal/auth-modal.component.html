@@ -1,8 +1,9 @@
 <ion-content class="ion-padding">
   <div class="container-auth">
     <div class="auth-section" *ngIf="!showOtp">
-      <!-- Vehicle Selection -->
-      <ion-segment [(ngModel)]="segmentValue" mode="ios">
+
+      <!-- Segment -->
+      <ion-segment [(ngModel)]="segmentValue" mode="ios" *ngIf="!logeado">
         <ion-segment-button value="register">
           <ion-label>Crear cuenta</ion-label>
         </ion-segment-button>
@@ -10,13 +11,22 @@
           <ion-label>Iniciar sesión</ion-label>
         </ion-segment-button>
       </ion-segment>
+
+      <!--My car-->
+      <div *ngIf="logeado">
+        <ion-item>
+          <ion-label>my car</ion-label>
+        </ion-item>
+      </div>
+
       <div class="container-auth" [ngSwitch]="segmentValue">
         <!-- Registro -->
         <div *ngSwitchCase="'register'">
           <ion-list>
             <ion-item lines="none">
               <ion-label class="ion-padding-vertical">
-                <h2 class="title-register">Selecciona tu vehículo</h2>
+                <h2 class="title-register" *ngIf="!logeado">Selecciona tu vehículo</h2>
+                <h2 class="title-register" *ngIf="logeado">Ó agrega uno nuevo</h2>
               </ion-label>
             </ion-item>
             <ion-item *ngFor="let vehicle of vehicles" class="ion-no-padding ion-no-margin">
@@ -29,6 +39,7 @@
           </ion-list>
           <!-- Aquí puedes agregar más campos para el registro -->
         </div>
+
         <!-- Inicio de sesión -->
         <div *ngSwitchCase="'login'">
           <div class="login-container">
@@ -45,7 +56,7 @@
     </div>
 
     <!-- OTP -->
-    <div class="auth-otp" *ngIf="showOtp">
+    <div class="auth-otp" *ngIf="showOtp && !logeado">
       <div class="login-container">
         <div class="icon-circle">
           <img src="assets/iconsax-svg/All/bold/lock.svg" alt="lock">
