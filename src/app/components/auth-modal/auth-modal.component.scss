@@ -1,8 +1,10 @@
+// Modal
 .custom-sheet-modal {
     --height: auto;
     --max-height: 90%;
 }
 
+// Container Auth
 .container-auth {
     font-family: 'Gilroy', sans-serif !important;
     padding: 16px 0;
@@ -11,6 +13,11 @@
         font-size: 24px;
         font-weight: 800;
         color: #223D62;
+
+        &:not(:first-child) {
+            font-size: 18px;
+            color: #9CA3AF;
+        }
     }
 
     h2 {
@@ -31,45 +38,27 @@
     }
 }
 
+// Login Container
 .login-container {
-    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: stretch;
+    padding: 16px 0;
 
-    h2 {
-        color: var(--ion-color-secondary);
-        text-align: center;
-        font-family: 'Gilroy', sans-serif !important;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-    }
-
-    p {
-        color: #6B7280;
-        text-align: center;
-        font-family: 'Gilroy', sans-serif !important;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-    }
-}
-
-.auth-otp {
-    .login-container {
+    .login-container-title {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        gap: 8px;
+        align-self: stretch;
 
         h2 {
             color: var(--ion-color-secondary);
             text-align: center;
             font-family: 'Gilroy', sans-serif !important;
             font-size: 24px;
-            font-style: normal;
             font-weight: 700;
-            line-height: normal;
+            margin: 0;
         }
 
         p {
@@ -77,20 +66,18 @@
             text-align: center;
             font-family: 'Gilroy', sans-serif !important;
             font-size: 16px;
-            font-style: normal;
             font-weight: 500;
-            line-height: normal;
+            margin: 0;
         }
     }
 }
 
-
-
+// Icon Circle
 .icon-circle {
     width: 56px;
     height: auto;
     border-radius: 50%;
-    background-color: rgb(34, 61, 98, 0.2);
+    background-color: rgba(34, 61, 98, 0.2);
     display: block;
     margin: auto;
     padding: 12px;
@@ -102,5 +89,61 @@
         margin: auto;
         margin-right: 10px;
         filter: invert(68%) sepia(13%) saturate(246%) hue-rotate(176deg) brightness(92%) contrast(87%);
+    }
+}
+
+// Vehicle Card
+.my-vehicle-card {
+    border: 1px solid #E5E5E5;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    background-color: #fff;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #4B5563;
+    }
+
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        color: #4B5563;
+    }
+}
+
+// License Plate
+.placa {
+    border-radius: 4px;
+    border: 1px solid #EAB308;
+    background: #FBBF24;
+    box-shadow: 0px 0px 6px 0px rgba(234, 179, 8, 0.80);
+    display: flex;
+    padding: 6px 8px;
+    justify-content: center;
+    align-items: center;
+
+    h5 {
+        font-family: 'Gilroy', sans-serif !important;
+        overflow: hidden;
+        color: #713F12;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0;
+    }
+}
+
+// Login Header
+.head-login {
+    h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #223D62;
+
+        span {
+            font-weight: 400;
+        }
     }
 }

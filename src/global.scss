@@ -126,7 +126,6 @@ ion-item {
 
 .input-desvare {
   padding: 10px 0;
-  margin-bottom: 16px;
   display: block;
   --background: #fff;
   background-color: #fff;
@@ -178,4 +177,11 @@ ion-item {
           color: #223D62; // Cambia el color del label a naranja cuando está enfocado
       }
   }
+}
+
+.text-error {
+  font-family: 'Gilroy', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
 }
