@@ -46,6 +46,13 @@
     align-self: stretch;
     padding: 16px 0;
 
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-self: stretch;
+    }
+
     .login-container-title {
         display: flex;
         flex-direction: column;

@@ -36,7 +36,8 @@ export class Tab2Page {
     const modal = await this.modalController.create({
       component: AuthModalComponent,
       breakpoints: [0, 0.5, 0.8, 1],
-      initialBreakpoint: 0.5
+      initialBreakpoint: 0.5,
+      mode: 'ios'
     });
     await modal.present();
   }

@@ -1,7 +1,8 @@
 <ion-content class="ion-padding">
+  <!-- Contenido principal (no OTP) -->
   <div class="container-auth" *ngIf="!showOtp">
     <div class="auth-section">
-      <!-- Segment solo se muestra si no está logueado -->
+      <!-- Segmento de registro/login (solo para usuarios no logueados) -->
       <ion-segment [(ngModel)]="segmentValue" mode="ios" *ngIf="!logeado">
         <ion-segment-button value="register">
           <ion-label>Crear cuenta</ion-label>
@@ -13,13 +14,13 @@
 
       <!-- Contenido para usuarios logueados -->
       <div *ngIf="logeado">
+        <!-- Información del usuario y vehículo actual -->
         <ion-list>
           <ion-item lines="none">
             <ion-label class="head-login">
               <h2>Bienvenido, <span>Brayhan Garcia</span></h2>
             </ion-label>
           </ion-item>
-
           <ion-item lines="none" mode="ios" class="my-vehicle-card">
             <img class="brand-vehicle" slot="start" src="assets/brand.png" alt="Desvare">
             <ion-label class="ion-padding-vertical">
@@ -32,7 +33,7 @@
           </ion-item>
         </ion-list>
 
-        <!-- Lista de vehículos siempre visible -->
+        <!-- Lista de vehículos para agregar -->
         <ion-list mode="ios">
           <ion-item lines="none">
             <ion-label class="ion-no-padding">
@@ -49,20 +50,21 @@
         </ion-list>
       </div>
 
-
-
-      <!-- Contenido condicional basado en el estado de login -->
+      <!-- Contenido para usuarios no logueados -->
       <div *ngIf="!logeado">
         <div [ngSwitch]="segmentValue">
           <!-- Registro -->
           <div *ngSwitchCase="'register'">
-            <ion-list mode="ios">
-              <ion-item lines="none">
+            <ion-list mode="ios" [@fadeInUp]>
+              <ion-item lines="none" [@fadeInUp]="{ value: null, params: { delay: '100ms' } }">
                 <ion-label class="ion-padding-vertical">
                   <h2 class="title-register">Selecciona tu vehículo</h2>
                 </ion-label>
               </ion-item>
-              <ion-item *ngFor="let vehicle of vehicles" class="ion-no-padding ion-no-margin">
+              <ion-item 
+                *ngFor="let vehicle of vehicles; let i = index" 
+                class="ion-no-padding ion-no-margin"
+                [@fadeInUp]="{ value: null, params: { delay: (150 + i * 50) + 'ms' } }">
                 <img slot="start" [src]="vehicle.icon" [alt]="'Servicio de grúa para ' + vehicle.name">
                 <ion-label>
                   <h3>{{ vehicle.name }}</h3>
@@ -74,24 +76,42 @@
 
           <!-- Inicio de sesión -->
           <div *ngSwitchCase="'login'">
-            <div class="login-container">
-              <div class="login-container-title">
+            <div class="login-container" [@fadeInUp]>
+              <div class="login-container-title" [@fadeInUp]="{ value: null, params: { delay: '100ms' } }">
                 <h2>Ingresa a tu cuenta</h2>
                 <p>Ingresa tu número celular ya registrado, para continuar con el servicio</p>
               </div>
-              <ion-item lines="none" mode="ios" class="input-desvare">
-                <img slot="start" src="assets/iconsax-svg/All/bold/call.svg" alt="phone">
-                <ion-input label="Número celular" label-placement="floating" type="tel" [(ngModel)]="phoneNumber"
-                  mask="(000) 000-0000" placeholder="(300) 123-4567">
-                </ion-input>
-              </ion-item>
-              <ion-text color="danger" class="text-error" *ngIf="phoneError">{{ phoneError }}</ion-text>
-              <ion-button expand="block" (click)="onSubmit()" [disabled]="isLoading">
-                <ng-container *ngIf="!isLoading">
-                  Ingresar
-                </ng-container>
-                <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-              </ion-button>
+              <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form"
+                [@fadeInUp]="{ value: null, params: { delay: '200ms' } }">
+                <ion-item lines="none" mode="ios" class="input-desvare"
+                  [@fadeInUp]="{ value: null, params: { delay: '300ms' } }">
+                  <img slot="start" src="assets/iconsax-svg/All/bold/call.svg" alt="phone">
+                  <ion-input label="Número celular" label-placement="floating" type="tel" [(ngModel)]="phoneNumber"
+                    name="phoneNumber" required pattern="^3[0-9]{9}$" mask="(000) 000-0000" placeholder="(300) 123-4567"
+                    #phoneInput="ngModel">
+                  </ion-input>
+                </ion-item>
+
+                <ion-text color="danger" class="text-error"
+                  *ngIf="phoneInput.invalid && (phoneInput.dirty || phoneInput.touched)"
+                  [@fadeInUp]="{ value: null, params: { delay: '400ms' } }">
+                  <p *ngIf="phoneInput.errors?.['required']">El número de celular es requerido.</p>
+                  <p *ngIf="phoneInput.errors?.['pattern']">El número debe comenzar con 3 y tener 10 dígitos.</p>
+                </ion-text>
+
+                <ion-text color="danger" class="text-error" *ngIf="phoneError"
+                  [@fadeInUp]="{ value: null, params: { delay: '400ms' } }">
+                  {{ phoneError }}
+                </ion-text>
+
+                <ion-button expand="block" type="submit" mode="ios" [disabled]="loginForm.form.invalid || isLoading"
+                  [@fadeInUp]="{ value: null, params: { delay: '500ms' } }">
+                  <ng-container *ngIf="!isLoading">
+                    Ingresar
+                  </ng-container>
+                  <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+                </ion-button>
+              </form>
             </div>
           </div>
         </div>
@@ -101,32 +121,49 @@
 
   <!-- OTP -->
   <div *ngIf="showOtp">
-    <div class="login-container">
-      <div class="icon-circle">
+    <div class="login-container" [@fadeInUp]>
+      <div class="icon-circle" [@fadeInUp]="{ value: null, params: { delay: '100ms' } }">
         <img src="assets/iconsax-svg/All/bold/shield-tick.svg" alt="lock">
       </div>
-      <div class="login-container-title">
+      <div class="login-container-title" [@fadeInUp]="{ value: null, params: { delay: '200ms' } }">
         <h2>Ingrese el código</h2>
         <p>Hemos enviado un código de 6 dígitos a su teléfono móvil. </p>
       </div>
-      <ion-item lines="none" mode="ios" class="input-desvare">
-        <img slot="start" src="assets/iconsax-svg/All/bold/lock.svg" alt="lock">
-        <ion-input label="Código de seguridad" label-placement="floating" type="tel" [(ngModel)]="otpCode" mask="000000"
-          placeholder="123456">
-        </ion-input>
-      </ion-item>
-      <ion-text color="danger" class="text-error" *ngIf="otpError">{{ otpError }}</ion-text>
-      <ion-button expand="block" color="primary" (click)="validateOtp()" [disabled]="isLoading">
-        <ng-container *ngIf="!isLoading">
-          Validar código
-        </ng-container>
-        <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-      </ion-button>
-      <ion-button expand="block" color="white" (click)="cancelarProceso()">Cancelar proceso</ion-button>
+      <form (ngSubmit)="validateOtp()" #otpForm="ngForm" [@fadeInUp] class="login-form">
+        <ion-item lines="none" mode="ios" class="input-desvare"
+          [@fadeInUp]="{ value: null, params: { delay: '300ms' } }">
+          <img slot="start" src="assets/iconsax-svg/All/bold/lock.svg" alt="lock">
+          <ion-input label="Código de seguridad" label-placement="floating" type="tel" [(ngModel)]="otpCode"
+            name="otpCode" required minlength="6" maxlength="6" pattern="[0-9]*" mask="000000" placeholder="123456"
+            #otpInput="ngModel">
+          </ion-input>
+        </ion-item>
+
+        <ion-text color="danger" class="text-error" *ngIf="otpInput.invalid && (otpInput.dirty || otpInput.touched)">
+          <p *ngIf="otpInput.errors?.['required']">El código es requerido.</p>
+          <p *ngIf="otpInput.errors?.['minlength'] || otpInput.errors?.['maxlength']">El código debe tener 6 dígitos.
+          </p>
+          <p *ngIf="otpInput.errors?.['pattern']">El código solo debe contener números.</p>
+        </ion-text>
+
+        <ion-text color="danger" class="text-error" *ngIf="otpError">{{ otpError }}</ion-text>
+
+        <ion-button expand="block" color="primary" mode="ios" type="submit" [disabled]="otpForm.invalid || isLoading">
+          <ng-container *ngIf="!isLoading">
+            Validar código
+          </ng-container>
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+        </ion-button>
+
+        <ion-button expand="block" color="white" mode="ios" type="button" (click)="cancelarProceso()">
+          Cancelar proceso
+        </ion-button>
+      </form>
     </div>
   </div>
 
+  <!-- Botón de cerrar sesión (solo visible para usuarios logueados) -->
   <div *ngIf="logeado">
-    <ion-button expand="block" color="white" (click)="cerrarSesion()">Cerrar sesión</ion-button>
+    <ion-button expand="block" color="white" mode="ios" (click)="cerrarSesion()">Cerrar sesión</ion-button>
   </div>
 </ion-content>
