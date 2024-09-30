@@ -163,8 +163,9 @@ ion-item {
       --placeholder-font-family: 'Gilroy', sans-serif;
       --label-font-weight: 600 !important; // Añadido para asegurar que el label sea semibold
       --placeholder-font-weight: 600 !important;
+      --placeholder-color: #9CA3AF;
   }
-  
+
   .destino-input {
       &.ion-focused {
           --color: #223D62; // Cambia el color del texto a naranja cuando está enfocado

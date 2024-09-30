@@ -44,6 +44,14 @@ export class AuthModalComponent implements OnInit {
     this.modalController.dismiss();
   }
 
+  cancelarProceso() {
+    this.showOtp = false;
+    this.otpCode = '';
+    this.otpError = '';
+    this.phoneNumber = '';
+    this.phoneError = '';
+  }
+
   validatePhoneNumber() {
     // Eliminar espacios y caracteres no numéricos
     const cleanNumber = this.phoneNumber.replace(/\D/g, '');

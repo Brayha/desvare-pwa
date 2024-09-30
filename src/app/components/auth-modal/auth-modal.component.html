@@ -83,7 +83,7 @@
   <div *ngIf="showOtp">
     <div class="login-container">
       <div class="icon-circle">
-        <img src="assets/iconsax-svg/All/bold/lock.svg" alt="lock">
+        <img src="assets/iconsax-svg/All/bold/shield-tick.svg" alt="lock">
       </div>
       <h2>Ingrese el código</h2>
       <p>Hemos enviado un código de 6 dígitos a su teléfono móvil. </p>
@@ -94,7 +94,8 @@
         </ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="otpError">{{ otpError }}</ion-text>
-      <ion-button expand="block" (click)="validateOtp()">Validar código</ion-button>
+      <ion-button expand="block" color="primary" (click)="validateOtp()">Validar código</ion-button>
+      <ion-button expand="block" color="white" (click)="cancelarProceso()">Cancelar proceso</ion-button>
     </div>
   </div>
 
