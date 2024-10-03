@@ -18,17 +18,19 @@
         <ion-list>
           <ion-item lines="none">
             <ion-label class="head-login">
-              <h2>Bienvenido, <span>Brayhan Garcia</span></h2>
+              <h2>Bienvenido, <span>{{ nombreUsuario }}</span></h2>
+              <p>Selecciona tu vehículo</p>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" mode="ios" class="my-vehicle-card">
-            <img class="brand-vehicle" slot="start" src="assets/brand.png" alt="Desvare">
+          
+          <ion-item *ngFor="let vehicle of savedVehicles" lines="none" mode="ios" class="my-vehicle-card" (click)="selectVehicle(vehicle)">
+            <img class="brand-vehicle" slot="start" [src]="vehicle.icon" [alt]="vehicle.brand">
             <ion-label class="ion-padding-vertical">
-              <h3>Ford</h3>
-              <p>Explorer</p>
+              <h3>{{ vehicle.brand }}</h3>
+              <p>{{ vehicle.model }}</p>
             </ion-label>
             <div slot="end" class="placa">
-              <h5>ZIV-026</h5>
+              <h5>{{ vehicle.plate }}</h5>
             </div>
           </ion-item>
         </ion-list>

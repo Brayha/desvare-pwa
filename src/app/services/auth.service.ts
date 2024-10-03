@@ -19,6 +19,7 @@ export class AuthService {
     this.isLoggedIn = false;
     localStorage.removeItem('user_token');
   }
+  
 
   async checkPhoneExists(phoneNumber: string): Promise<boolean> {
     // Aquí simularemos una verificación en la base de datos

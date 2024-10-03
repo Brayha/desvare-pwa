@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth-modal',
@@ -23,7 +23,7 @@ import { AuthService } from '../../services/auth.service';
   ]
 })
 export class AuthModalComponent implements OnInit {
-  // Estado del componente
+  // Propiedades de autenticación
   showOtp: boolean = false;
   logeado: boolean = false;
   segmentValue: string = 'register';
@@ -33,7 +33,11 @@ export class AuthModalComponent implements OnInit {
   otpError: string = '';
   isLoading: boolean = false;
 
-  // Datos de vehículos
+  // Propiedades de usuario y vehículos
+  nombreUsuario: string = '';
+  savedVehicles: any[] = [];
+
+  // Lista de tipos de vehículos disponibles
   vehicles = [
     { name: 'Motocicleta', description: 'Vehículos de 2 ruedas', icon: '/assets/icon-vehicle-type/Moto.svg' },
     { name: 'Automóvil', description: 'Vehículos de 2 y 4 puertas', icon: '/assets/icon-vehicle-type/Automovil.svg' },
@@ -51,22 +55,42 @@ export class AuthModalComponent implements OnInit {
 
   ngOnInit() {
     this.logeado = this.authService.checkLoginStatus();
+    if (this.logeado) {
+      this.loadSavedVehicles();
+      this.loadUserName();
+    }
   }
 
-  // Métodos de control del modal
-  dismissModal() {
-    this.modalController.dismiss();
+  // Métodos de carga de datos de usuario
+  async loadSavedVehicles() {
+    try {
+      // TODO: Implementar llamada al servicio para obtener vehículos guardados
+      /* this.savedVehicles = await this.authService.getSavedVehicles(); */
+      this.savedVehicles = [
+        { brand: 'Ford', model: 'Explorer', plate: 'ZIV-026', icon: 'assets/brand.png' }
+      ];
+    } catch (error) {
+      console.error('Error al cargar los vehículos guardados:', error);
+    }
   }
 
-  cancelarProceso() {
-    this.showOtp = false;
-    this.otpCode = '';
-    this.otpError = '';
-    this.phoneNumber = '';
-    this.phoneError = '';
+  async loadUserName() {
+    try {
+      // TODO: Implementar llamada al servicio para obtener el nombre del usuario
+      /* this.nombreUsuario = await this.authService.getUserName(); */
+      this.nombreUsuario = 'Jhon Snow';
+    } catch (error) {
+      console.error('Error al cargar el nombre del usuario:', error);
+    }
   }
 
-  // Validación y envío de formulario
+  // Métodos de interacción con vehículos
+  selectVehicle(vehicle: any) {
+    // TODO: Implementar lógica para seleccionar un vehículo
+    console.log('Vehículo seleccionado:', vehicle);
+  }
+
+  // Métodos de autenticación
   validatePhoneNumber(): boolean {
     const cleanNumber = this.phoneNumber.replace(/\D/g, '');
     if (cleanNumber.length !== 10 || !cleanNumber.startsWith('3')) {
@@ -96,22 +120,21 @@ export class AuthModalComponent implements OnInit {
     }
   }
 
-  // Validación de OTP
   async validateOtp() {
-    this.isLoading = true;
     if (this.otpCode.length !== 6) {
       this.otpError = 'El código debe tener 6 dígitos.';
-      this.isLoading = false;
       return;
     }
   
+    this.isLoading = true;
     try {
       const isValid = await this.authService.verifyOtp(this.phoneNumber, this.otpCode);
       if (isValid) {
-        this.authService.login(this.phoneNumber);
+        await this.authService.login(this.phoneNumber);
         this.logeado = true;
         this.showOtp = false;
         await this.presentWelcomeToast();
+        // TODO: Implementar lógica post-login (cerrar modal, redirigir, etc.)
       } else {
         this.otpError = 'Código inválido. Por favor, intente de nuevo.';
       }
@@ -123,14 +146,27 @@ export class AuthModalComponent implements OnInit {
     }
   }
 
-  // Métodos auxiliares
+  // Métodos de UI
+  dismissModal() {
+    this.modalController.dismiss();
+  }
+
+  cancelarProceso() {
+    this.showOtp = false;
+    this.otpCode = '';
+    this.otpError = '';
+    this.phoneNumber = '';
+    this.phoneError = '';
+  }
+
   async presentWelcomeToast() {
     const toast = await this.toastController.create({
       message: 'Bienvenido. Ya puedes pedir un servicio.',
       duration: 3000,
       position: 'bottom',
-      color: 'success',
-      mode: 'ios'
+      cssClass: 'custom-welcome-toast',
+      mode: 'ios',
+      animated: true,
     });
     toast.present();
   }
@@ -141,5 +177,6 @@ export class AuthModalComponent implements OnInit {
     this.phoneNumber = '';
     this.phoneError = '';
     this.otpCode = '';
+    // TODO: Implementar lógica adicional post-logout si es necesario
   }
 }
