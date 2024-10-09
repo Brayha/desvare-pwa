@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { UserRegistrationComponent } from '../user-registration/user-registration.component';
 
 @Component({
   selector: 'app-auth-modal',
@@ -59,6 +60,16 @@ export class AuthModalComponent implements OnInit {
       this.loadSavedVehicles();
       this.loadUserName();
     }
+  }
+
+  async openRegistrationModal(vehicle: any) {
+    const modal = await this.modalController.create({
+      component: UserRegistrationComponent,
+      componentProps: {
+        selectedVehicle: vehicle
+      }
+    });
+    return await modal.present();
   }
 
   // Métodos de carga de datos de usuario

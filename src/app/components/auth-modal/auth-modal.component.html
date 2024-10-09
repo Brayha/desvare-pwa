@@ -22,8 +22,9 @@
               <p>Selecciona tu vehículo</p>
             </ion-label>
           </ion-item>
-          
-          <ion-item *ngFor="let vehicle of savedVehicles" lines="none" mode="ios" class="my-vehicle-card" (click)="selectVehicle(vehicle)">
+
+          <ion-item *ngFor="let vehicle of savedVehicles" lines="none" mode="ios" class="my-vehicle-card"
+            (click)="selectVehicle(vehicle)">
             <img class="brand-vehicle" slot="start" [src]="vehicle.icon" [alt]="vehicle.brand">
             <ion-label class="ion-padding-vertical">
               <h3>{{ vehicle.brand }}</h3>
@@ -63,10 +64,9 @@
                   <h2 class="title-register">Selecciona tu vehículo</h2>
                 </ion-label>
               </ion-item>
-              <ion-item 
-                *ngFor="let vehicle of vehicles; let i = index" 
-                class="ion-no-padding ion-no-margin"
-                [@fadeInUp]="{ value: null, params: { delay: (150 + i * 50) + 'ms' } }">
+              <ion-item *ngFor="let vehicle of vehicles; let i = index" class="ion-no-padding ion-no-margin"
+                [@fadeInUp]="{ value: null, params: { delay: (150 + i * 50) + 'ms' } }"
+                (click)="openRegistrationModal(vehicle)">
                 <img slot="start" [src]="vehicle.icon" [alt]="'Servicio de grúa para ' + vehicle.name">
                 <ion-label>
                   <h3>{{ vehicle.name }}</h3>

@@ -1,0 +1,35 @@
+<ion-header mode="ios" class="ion-padding-vertical">
+  <ion-toolbar mode="ios" class="header-user-registration">
+    <ion-title slot="start">Selecciona tu vehículo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <img src="assets/iconsax-svg/All/bulk/close-circle.svg" alt="Cerrar">
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item class="car-brand-register ion-no-padding ion-no-margin" mode="ios" lines="none">
+    <img slot="start" [src]="selectedVehicle.icon" [alt]="'Icono de ' + selectedVehicle.name">
+    <ion-label>
+      <h2>{{ selectedVehicle.name }}</h2>
+      <p>{{ selectedVehicle.description }}</p>
+    </ion-label>
+  </ion-item>
+
+  <div class="ion-padding-vertical">
+    <!--buscador-->
+    <ion-searchbar mode="ios" placeholder="Buscar"></ion-searchbar>
+
+    <!--lista de modelos de vehículos-->
+    <ion-list class="ion-padding-vertical">
+      <ion-item class="ion-no-padding ion-no-margin brand-item" mode="ios">
+        <img slot="start" src="assets/brand.png" alt="brand">
+        <ion-label>
+          <h2>Ford</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
