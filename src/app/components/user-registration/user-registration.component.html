@@ -19,17 +19,21 @@
   </ion-item>
 
   <div class="ion-padding-vertical">
-    <!--buscador-->
     <ion-searchbar mode="ios" placeholder="Buscar"></ion-searchbar>
 
-    <!--lista de modelos de vehículos-->
-    <ion-list class="ion-padding-vertical">
-      <ion-item class="ion-no-padding ion-no-margin brand-item" mode="ios">
-        <img slot="start" src="assets/brand.png" alt="brand">
+    <ion-list class="ion-padding-vertical" *ngIf="!loading && !error">
+      <ion-item class="ion-no-padding ion-no-margin brand-item" mode="ios" *ngFor="let brand of brands">
         <ion-label>
-          <h2>Ford</h2>
+          <h2>{{ brand.name }}</h2>
+          <p>{{ brand.total_items }} modelos</p>
         </ion-label>
       </ion-item>
     </ion-list>
+
+    <ion-spinner *ngIf="loading"></ion-spinner>
+
+    <ion-text color="danger" *ngIf="error">
+      {{ error }}
+    </ion-text>
   </div>
 </ion-content>

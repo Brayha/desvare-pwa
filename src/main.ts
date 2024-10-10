@@ -4,6 +4,7 @@ import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http'; // Añadida esta línea
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -28,6 +29,7 @@ bootstrapApplication(AppComponent, {
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    importProvidersFrom(HttpClientModule), // Añadida esta línea
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
