@@ -8,6 +8,7 @@ interface Vehicle {
   icon: string;
   name: string;
   description: string;
+  type: string;
 }
 
 @Component({
@@ -16,14 +17,14 @@ interface Vehicle {
   styleUrls: ['./user-registration.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule],
-  providers: [MercadoLibreService] // Añadida esta línea
+  providers: [MercadoLibreService]
 })
 export class UserRegistrationComponent implements OnInit {
   @Input() selectedVehicle: Vehicle = {} as Vehicle;
   brands: Brand[] = [];
+  models: Model[] = [];
   loading = false;
   error = '';
-  models: Model[] = [];
   selectedBrand: Brand | null = null;
 
   constructor(
@@ -35,32 +36,12 @@ export class UserRegistrationComponent implements OnInit {
     this.loadBrands();
   }
 
-  loadModels(brand: Brand) {
-    this.loading = true;
-    this.error = '';
-    this.models = [];
-    this.selectedBrand = brand;
-
-    this.mlService.getVehicleModels('MCO1763', brand.id)
-      .subscribe({
-        next: (models) => {
-          this.models = models;
-          this.loading = false;
-        },
-        error: (err) => {
-          this.error = 'Error al cargar los modelos. Por favor, intenta de nuevo.';
-          this.loading = false;
-          console.error('Error:', err);
-        }
-      });
-  }
-
   loadBrands() {
     this.loading = true;
     this.error = '';
     this.brands = [];
 
-    this.mlService.getVehicleBrands('MCO1763') // Usamos el ID de motos
+    this.mlService.getVehicleBrands(this.selectedVehicle.type)
       .subscribe({
         next: (brands) => {
           this.brands = brands;
@@ -68,6 +49,26 @@ export class UserRegistrationComponent implements OnInit {
         },
         error: (err) => {
           this.error = 'Error al cargar las marcas. Por favor, intenta de nuevo.';
+          this.loading = false;
+          console.error('Error:', err);
+        }
+      });
+  }
+
+  loadModels(brand: Brand) {
+    this.loading = true;
+    this.error = '';
+    this.models = [];
+    this.selectedBrand = brand;
+
+    this.mlService.getVehicleModels(this.selectedVehicle.type, brand.id)
+      .subscribe({
+        next: (models) => {
+          this.models = models;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Error al cargar los modelos. Por favor, intenta de nuevo.';
           this.loading = false;
           console.error('Error:', err);
         }

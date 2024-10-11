@@ -39,15 +39,16 @@ export class AuthModalComponent implements OnInit {
   savedVehicles: any[] = [];
 
   // Lista de tipos de vehículos disponibles
+
   vehicles = [
-    { name: 'Motocicleta', description: 'Vehículos de 2 ruedas', icon: '/assets/icon-vehicle-type/Moto.svg' },
-    { name: 'Automóvil', description: 'Vehículos de 2 y 4 puertas', icon: '/assets/icon-vehicle-type/Automovil.svg' },
-    { name: 'Camioneta', description: 'De platón y cajón', icon: '/assets/icon-vehicle-type/Camioneta.svg' },
-    { name: 'Camión', description: 'Furgón o estacas', icon: '/assets/icon-vehicle-type/Camion.svg' },
-    { name: 'Autobus', description: 'Transporte urbano e intermunicipal', icon: '/assets/icon-vehicle-type/Autobus.svg' },
-    { name: 'Otra carga', description: 'Trasteos, maquinaria, etc...', icon: '/assets/icon-vehicle-type/Otra.svg' }
+    { icon: '/assets/icon-vehicle-type/Moto.svg', name: 'Motocicleta', description: 'Hasta 500cc', type: 'motocicleta' },
+    { icon: '/assets/icon-vehicle-type/Automovil.svg', name: 'Automóvil', description: 'Sedán, hatchback', type: 'automovil' },
+    { icon: '/assets/icon-vehicle-type/Camioneta.svg', name: 'Camioneta', description: 'SUV, pickup', type: 'camioneta' },
+    { icon: '/assets/icon-vehicle-type/Camion.svg', name: 'Camión', description: 'Carga pesada', type: 'camion' },
+    { icon: '/assets/icon-vehicle-type/Autobus.svg', name: 'Bus', description: 'Transporte público', type: 'bus' }
   ];
 
+  
   constructor(
     private modalController: ModalController,
     private authService: AuthService,

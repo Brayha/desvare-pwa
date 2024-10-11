@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 export interface Brand {
   id: string;
@@ -20,9 +20,23 @@ export interface Model {
 export class MercadoLibreService {
   private readonly API_URL = 'https://api.mercadolibre.com/sites/MCO';
 
+  // Mapa de tipos de vehículos a categorías de MercadoLibre
+  private vehicleCategories: { [key: string]: string } = {
+    'motocicleta': 'MCO1763',
+    'automovil': 'MCO1744',
+    'camioneta': 'MCO1745',
+    'camion': 'MCO1748',
+    'bus': 'MCO1747'
+  };
+
   constructor(private http: HttpClient) {}
 
-  getVehicleBrands(categoryId: string): Observable<Brand[]> {
+  getVehicleBrands(vehicleType: string): Observable<Brand[]> {
+    const categoryId = this.vehicleCategories[vehicleType];
+    if (!categoryId) {
+      return throwError(() => new Error('Tipo de vehículo no válido'));
+    }
+
     return this.http.get<any>(`${this.API_URL}/search?category=${categoryId}&limit=50`)
       .pipe(
         map(response => {
@@ -46,10 +60,20 @@ export class MercadoLibreService {
           
           return Array.from(brandsMap.values())
             .sort((a, b) => a.name.localeCompare(b.name));
+        }),
+        catchError(error => {
+          console.error('Error al obtener las marcas:', error);
+          return throwError(() => new Error('Error al cargar las marcas. Por favor, intenta de nuevo.'));
         })
       );
   }
-  getVehicleModels(categoryId: string, brandId: string): Observable<Model[]> {
+
+  getVehicleModels(vehicleType: string, brandId: string): Observable<Model[]> {
+    const categoryId = this.vehicleCategories[vehicleType];
+    if (!categoryId) {
+      return throwError(() => new Error('Tipo de vehículo no válido'));
+    }
+
     return this.http.get<any>(`${this.API_URL}/search?category=${categoryId}&brand=${brandId}&limit=50`)
       .pipe(
         map(response => {
@@ -69,6 +93,10 @@ export class MercadoLibreService {
           
           return Array.from(modelsMap.values())
             .sort((a, b) => a.name.localeCompare(b.name));
+        }),
+        catchError(error => {
+          console.error('Error al obtener los modelos:', error);
+          return throwError(() => new Error('Error al cargar los modelos. Por favor, intenta de nuevo.'));
         })
       );
   }
