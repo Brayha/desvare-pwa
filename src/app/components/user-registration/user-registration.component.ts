@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MercadoLibreService, Brand } from '../../services/mercado-libre.service';
+import { MercadoLibreService, Brand, Model } from '../../services/mercado-libre.service';
 
 interface Vehicle {
   icon: string;
@@ -23,6 +23,8 @@ export class UserRegistrationComponent implements OnInit {
   brands: Brand[] = [];
   loading = false;
   error = '';
+  models: Model[] = [];
+  selectedBrand: Brand | null = null;
 
   constructor(
     private modalController: ModalController,
@@ -31,6 +33,26 @@ export class UserRegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.loadBrands();
+  }
+
+  loadModels(brand: Brand) {
+    this.loading = true;
+    this.error = '';
+    this.models = [];
+    this.selectedBrand = brand;
+
+    this.mlService.getVehicleModels('MCO1763', brand.id)
+      .subscribe({
+        next: (models) => {
+          this.models = models;
+          this.loading = false;
+        },
+        error: (err) => {
+          this.error = 'Error al cargar los modelos. Por favor, intenta de nuevo.';
+          this.loading = false;
+          console.error('Error:', err);
+        }
+      });
   }
 
   loadBrands() {

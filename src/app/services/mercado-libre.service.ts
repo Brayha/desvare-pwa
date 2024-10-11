@@ -9,6 +9,11 @@ export interface Brand {
   total_items: number;
 }
 
+export interface Model {
+  id: string;
+  name: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,6 +45,29 @@ export class MercadoLibreService {
           });
           
           return Array.from(brandsMap.values())
+            .sort((a, b) => a.name.localeCompare(b.name));
+        })
+      );
+  }
+  getVehicleModels(categoryId: string, brandId: string): Observable<Model[]> {
+    return this.http.get<any>(`${this.API_URL}/search?category=${categoryId}&brand=${brandId}&limit=50`)
+      .pipe(
+        map(response => {
+          const modelsMap = new Map<string, Model>();
+          
+          response.results.forEach((item: any) => {
+            const modelAttribute = item.attributes.find((attr: any) => attr.id === 'MODEL');
+            if (modelAttribute) {
+              if (!modelsMap.has(modelAttribute.value_id)) {
+                modelsMap.set(modelAttribute.value_id, {
+                  id: modelAttribute.value_id,
+                  name: modelAttribute.value_name
+                });
+              }
+            }
+          });
+          
+          return Array.from(modelsMap.values())
             .sort((a, b) => a.name.localeCompare(b.name));
         })
       );

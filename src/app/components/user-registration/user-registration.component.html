@@ -22,16 +22,29 @@
     <ion-searchbar mode="ios" placeholder="Buscar"></ion-searchbar>
 
     <ion-list class="ion-padding-vertical" *ngIf="!loading && !error">
-      <ion-item class="ion-no-padding ion-no-margin brand-item" mode="ios" *ngFor="let brand of brands">
-        <ion-label>
-          <h2>{{ brand.name }}</h2>
-          <p>{{ brand.total_items }} modelos</p>
-        </ion-label>
-      </ion-item>
+      <ng-container *ngIf="!selectedBrand">
+        <ion-item class="ion-no-padding ion-no-margin brand-item" mode="ios" *ngFor="let brand of brands" (click)="loadModels(brand)">
+          <ion-label>
+            <h2>{{ brand.name }}</h2>
+            <p>{{ brand.total_items }} modelos</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+      <ng-container *ngIf="selectedBrand">
+        <ion-item class="ion-no-padding ion-no-margin" mode="ios" (click)="selectedBrand = null">
+          <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+          <ion-label>Volver a marcas</ion-label>
+        </ion-item>
+        <ion-item class="ion-no-padding ion-no-margin model-item" mode="ios" *ngFor="let model of models">
+          <ion-label>
+            <h2>{{ model.name }}</h2>
+          </ion-label>
+        </ion-item>
+      </ng-container>
     </ion-list>
-
+  
     <ion-spinner *ngIf="loading"></ion-spinner>
-
+  
     <ion-text color="danger" *ngIf="error">
       {{ error }}
     </ion-text>
