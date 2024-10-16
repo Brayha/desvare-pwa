@@ -64,13 +64,14 @@
                   <h2 class="title-register">Selecciona tu vehículo</h2>
                 </ion-label>
               </ion-item>
-              <ion-item *ngFor="let vehicle of vehicles; let i = index" class="ion-no-padding ion-no-margin"
-                [@fadeInUp]="{ value: null, params: { delay: (150 + i * 50) + 'ms' } }"
-                (click)="openRegistrationModal(vehicle)">
-                <img slot="start" [src]="vehicle.icon" [alt]="'Servicio de grúa para ' + vehicle.name">
+              <ion-item *ngFor="let categoria of categoriasVehiculos; let i = index" 
+                        class="ion-no-padding ion-no-margin"
+                        [@fadeInUp]="{ value: null, params: { delay: (150 + i * 50) + 'ms' } }"
+                        (click)="openRegistrationModal(categoria)">
+                <img slot="start" [src]="getIconForCategory(categoria.name)" [alt]="'Servicio de grúa para ' + categoria.name">
                 <ion-label>
-                  <h3>{{ vehicle.name }}</h3>
-                  <p>{{ vehicle.description }}</p>
+                  <h3>{{ categoria.name }}</h3>
+                  <p>{{ getDescriptionForCategory(categoria.name) }}</p>
                 </ion-label>
               </ion-item>
             </ion-list>

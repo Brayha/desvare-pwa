@@ -1,6 +1,6 @@
 <ion-header mode="ios" class="ion-padding-vertical">
   <ion-toolbar mode="ios" class="header-user-registration">
-    <ion-title slot="start">Selecciona tu vehículo</ion-title>
+    <ion-title slot="start">{{ getTitleForCurrentStep() }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal()">
         <img src="assets/iconsax-svg/All/bulk/close-circle.svg" alt="Cerrar">
@@ -10,43 +10,118 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item class="car-brand-register ion-no-padding ion-no-margin" mode="ios" lines="none">
-    <img slot="start" [src]="selectedVehicle.icon" [alt]="'Icono de ' + selectedVehicle.name">
-    <ion-label>
-      <h2>{{ selectedVehicle.name }}</h2>
-      <p>{{ selectedVehicle.description }}</p>
-    </ion-label>
-  </ion-item>
+  <!-- Sección de selección de vehículo -->
+  <div *ngIf="currentStep === 'vehicle-selection'">
+    <!-- Sección de Marcas -->
+    <div *ngIf="!marcaSeleccionada">
+      <ion-searchbar 
+        [(ngModel)]="searchTerm" 
+        (ionChange)="filterMarcas()" 
+        placeholder="Buscar marca">
+      </ion-searchbar>
 
-  <div class="ion-padding-vertical">
-    <ion-searchbar mode="ios" placeholder="Buscar"></ion-searchbar>
+      <ion-list>
+        <ion-item *ngFor="let marca of filteredMarcas" (click)="selectMarca(marca)">
+          <ion-label>{{ marca }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
 
-    <ion-list class="ion-padding-vertical" *ngIf="!loading && !error">
-      <ng-container *ngIf="!selectedBrand">
-        <ion-item class="ion-no-padding ion-no-margin brand-item" mode="ios" *ngFor="let brand of brands" (click)="loadModels(brand)">
-          <ion-label>
-            <h2>{{ brand.name }}</h2>
-            <p>{{ brand.total_items }} modelos</p>
-          </ion-label>
+    <!-- Sección de Modelos -->
+    <div *ngIf="marcaSeleccionada && !modeloSeleccionado">
+      <ion-item>
+        <ion-label>Marca seleccionada: {{ marcaSeleccionada }}</ion-label>
+        <ion-button slot="end" (click)="backToMarcas()">Cambiar</ion-button>
+      </ion-item>
+
+      <ion-searchbar 
+        [(ngModel)]="searchTerm" 
+        (ionChange)="filterModelos()" 
+        placeholder="Buscar modelo">
+      </ion-searchbar>
+
+      <ion-list>
+        <ion-item *ngFor="let modelo of filteredModelos" (click)="selectModelo(modelo)">
+          <ion-label>{{ modelo }}</ion-label>
         </ion-item>
-      </ng-container>
-      <ng-container *ngIf="selectedBrand">
-        <ion-item class="ion-no-padding ion-no-margin" mode="ios" (click)="selectedBrand = null">
-          <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
-          <ion-label>Volver a marcas</ion-label>
+      </ion-list>
+    </div>
+
+    <!-- Sección de Placa -->
+    <div *ngIf="marcaSeleccionada && modeloSeleccionado">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Vehículo seleccionado</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p>Marca: {{ marcaSeleccionada }}</p>
+          <p>Modelo: {{ modeloSeleccionado }}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <form (ngSubmit)="registerUser()">
+        <ion-item>
+          <ion-label position="floating">Placa del vehículo</ion-label>
+          <ion-input [(ngModel)]="placa" name="placa" required></ion-input>
         </ion-item>
-        <ion-item class="ion-no-padding ion-no-margin model-item" mode="ios" *ngFor="let model of models">
-          <ion-label>
-            <h2>{{ model.name }}</h2>
-          </ion-label>
-        </ion-item>
-      </ng-container>
-    </ion-list>
-  
-    <ion-spinner *ngIf="loading"></ion-spinner>
-  
-    <ion-text color="danger" *ngIf="error">
-      {{ error }}
-    </ion-text>
+
+        <ion-button expand="block" type="submit" [disabled]="!placa">
+          Continuar
+        </ion-button>
+      </form>
+    </div>
   </div>
+
+  <!-- Sección de información personal -->
+  <div *ngIf="currentStep === 'personal-info'">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Vehículo seleccionado</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>Marca: {{ marcaSeleccionada }}</p>
+        <p>Modelo: {{ modeloSeleccionado }}</p>
+        <p>Placa: {{ placa }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <form [formGroup]="personalInfoForm" (ngSubmit)="finalizarRegistro()">
+      <ion-item>
+        <ion-label position="floating">Nombre de usuario</ion-label>
+        <ion-input formControlName="username" type="text"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="personalInfoForm.get('username')?.hasError('required') && personalInfoForm.get('username')?.touched">
+        El nombre de usuario es requerido.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input formControlName="email" type="email"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="personalInfoForm.get('email')?.hasError('required') && personalInfoForm.get('email')?.touched">
+        El email es requerido.
+      </ion-text>
+      <ion-text color="danger" *ngIf="personalInfoForm.get('email')?.hasError('email') && personalInfoForm.get('email')?.touched">
+        Por favor, ingrese un email válido.
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Número celular</ion-label>
+        <ion-input formControlName="phone" type="tel"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="personalInfoForm.get('phone')?.hasError('required') && personalInfoForm.get('phone')?.touched">
+        El número celular es requerido.
+      </ion-text>
+      <ion-text color="danger" *ngIf="personalInfoForm.get('phone')?.hasError('pattern') && personalInfoForm.get('phone')?.touched">
+        Por favor, ingrese un número celular válido.
+      </ion-text>
+
+      <ion-button expand="block" type="submit" [disabled]="personalInfoForm.invalid">
+        Finalizar registro
+      </ion-button>
+    </form>
+  </div>
+
+  <ion-spinner *ngIf="loading"></ion-spinner>
+  <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
 </ion-content>

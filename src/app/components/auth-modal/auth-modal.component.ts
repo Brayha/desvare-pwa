@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MercadoLibre2Service } from '../../services/mercado-libre2.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import { UserRegistrationComponent } from '../user-registration/user-registratio
   ]
 })
 export class AuthModalComponent implements OnInit {
+  categoriasVehiculos: any[] = [];
   // Propiedades de autenticación
   showOtp: boolean = false;
   logeado: boolean = false;
@@ -50,12 +52,14 @@ export class AuthModalComponent implements OnInit {
 
   
   constructor(
+    private mercadoLibre2Service: MercadoLibre2Service,
     private modalController: ModalController,
     private authService: AuthService,
     private toastController: ToastController
   ) { }
 
   ngOnInit() {
+    this.loadCategorias();
     this.logeado = this.authService.checkLoginStatus();
     if (this.logeado) {
       this.loadSavedVehicles();
@@ -63,11 +67,54 @@ export class AuthModalComponent implements OnInit {
     }
   }
 
-  async openRegistrationModal(vehicle: any) {
+  loadCategorias() {
+    this.mercadoLibre2Service.getCategorias().subscribe(
+      (categorias) => {
+        this.categoriasVehiculos = this.ordenarCategorias(categorias);
+      },
+      (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    );
+  }
+
+  ordenarCategorias(categorias: any[]): any[] {
+    const orden = ['Motos', 'Carros y Camionetas', 'Camiones', 'Otros Vehículos'];
+    return categorias.sort((a, b) => orden.indexOf(a.name) - orden.indexOf(b.name));
+  }
+
+  getIconForCategory(categoryName: string): string {
+    // Aquí puedes definir los iconos para cada categoría
+    const iconMap: { [key: string]: string } = {
+      'Motos': '/assets/icon-vehicle-type/Moto.svg',
+      'Carros y Camionetas': '/assets/icon-vehicle-type/Automovil.svg',
+      'Camiones': '/assets/icon-vehicle-type/Camion.svg',
+      'Otros Vehículos': '/assets/icon-vehicle-type/Autobus.svg'
+    };
+    return iconMap[categoryName] || '/assets/icon-vehicle-type/Automovil.svg';
+  }
+
+  getDescriptionForCategory(categoryName: string): string {
+    // Aquí puedes definir descripciones para cada categoría
+    const descriptionMap: { [key: string]: string } = {
+      'Motos': 'Servicio para motocicletas',
+      'Carros y Camionetas': 'Servicio para automóviles y camionetas',
+      'Camiones': 'Servicio para vehículos de carga',
+      'Otros Vehículos': 'Servicio para otros tipos de vehículos'
+    };
+    return descriptionMap[categoryName] || 'Servicio de grúa';
+  }
+
+  async openRegistrationModal(categoria: any) {
     const modal = await this.modalController.create({
       component: UserRegistrationComponent,
       componentProps: {
-        selectedVehicle: vehicle
+        selectedVehicle: {
+          type: categoria.id,
+          name: categoria.name,
+          icon: this.getIconForCategory(categoria.name),
+          description: this.getDescriptionForCategory(categoria.name)
+        }
       }
     });
     return await modal.present();
