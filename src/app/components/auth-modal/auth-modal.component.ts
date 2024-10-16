@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UserRegistrationComponent } from '../user-registration/user-registration.component';
+import { ErrorHandlerService } from '../../services/error-handler.service';
 
 @Component({
   selector: 'app-auth-modal',
@@ -55,7 +56,8 @@ export class AuthModalComponent implements OnInit {
     private mercadoLibre2Service: MercadoLibre2Service,
     private modalController: ModalController,
     private authService: AuthService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private errorHandler: ErrorHandlerService
   ) { }
 
   ngOnInit() {
@@ -73,9 +75,27 @@ export class AuthModalComponent implements OnInit {
         this.categoriasVehiculos = this.ordenarCategorias(categorias);
       },
       (error) => {
-        console.error('Error al cargar categorías:', error);
+        this.errorHandler.handleError(error, 'Error al cargar categorías. Por favor, intenta de nuevo.');
       }
     );
+  }
+
+  async onSubmit() {
+    if (this.validatePhoneNumber()) {
+      this.isLoading = true;
+      try {
+        const exists = await this.authService.checkPhoneExists(this.phoneNumber);
+        if (exists) {
+          this.showOtp = true;
+        } else {
+          this.phoneError = 'Este número no está registrado en nuestra base de datos.';
+        }
+      } catch (error) {
+        this.errorHandler.handleError(error, 'Ocurrió un error al verificar el número. Por favor, intente de nuevo.');
+      } finally {
+        this.isLoading = false;
+      }
+    }
   }
 
   ordenarCategorias(categorias: any[]): any[] {
@@ -114,9 +134,24 @@ export class AuthModalComponent implements OnInit {
           name: categoria.name,
           icon: this.getIconForCategory(categoria.name),
           description: this.getDescriptionForCategory(categoria.name)
-        }
+        },
+        isAddingNewVehicle: this.logeado
       }
     });
+  
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        // Si se agregó un nuevo vehículo, lo añadimos a la lista de vehículos guardados
+        const newVehicle = result.data;
+        this.savedVehicles.push({
+          brand: newVehicle.marca,
+          model: newVehicle.modelo,
+          plate: newVehicle.placa,
+          icon: newVehicle.icon || this.getIconForCategory(newVehicle.name)
+        });
+      }
+    });
+  
     return await modal.present();
   }
 
@@ -125,11 +160,13 @@ export class AuthModalComponent implements OnInit {
     try {
       // TODO: Implementar llamada al servicio para obtener vehículos guardados
       /* this.savedVehicles = await this.authService.getSavedVehicles(); */
+      // Por ahora, inicializamos con un vehículo de ejemplo
       this.savedVehicles = [
         { brand: 'Ford', model: 'Explorer', plate: 'ZIV-026', icon: 'assets/brand.png' }
       ];
     } catch (error) {
       console.error('Error al cargar los vehículos guardados:', error);
+      this.errorHandler.handleError(error, 'Error al cargar los vehículos guardados. Por favor, intente de nuevo.');
     }
   }
 
@@ -160,24 +197,6 @@ export class AuthModalComponent implements OnInit {
     return true;
   }
 
-  async onSubmit() {
-    if (this.validatePhoneNumber()) {
-      this.isLoading = true;
-      try {
-        const exists = await this.authService.checkPhoneExists(this.phoneNumber);
-        if (exists) {
-          this.showOtp = true;
-        } else {
-          this.phoneError = 'Este número no está registrado en nuestra base de datos.';
-        }
-      } catch (error) {
-        console.error('Error al verificar el número de teléfono:', error);
-        this.phoneError = 'Ocurrió un error al verificar el número. Por favor, intente de nuevo.';
-      } finally {
-        this.isLoading = false;
-      }
-    }
-  }
 
   async validateOtp() {
     if (this.otpCode.length !== 6) {

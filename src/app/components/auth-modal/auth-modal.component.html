@@ -22,7 +22,7 @@
               <p>Selecciona tu vehículo</p>
             </ion-label>
           </ion-item>
-
+      
           <ion-item *ngFor="let vehicle of savedVehicles" lines="none" mode="ios" class="my-vehicle-card"
             (click)="selectVehicle(vehicle)">
             <img class="brand-vehicle" slot="start" [src]="vehicle.icon" [alt]="vehicle.brand">
@@ -35,7 +35,7 @@
             </div>
           </ion-item>
         </ion-list>
-
+      
         <!-- Lista de vehículos para agregar -->
         <ion-list mode="ios">
           <ion-item lines="none">
@@ -43,11 +43,13 @@
               <h2 class="title-registered">Ó agrega uno nuevo</h2>
             </ion-label>
           </ion-item>
-          <ion-item *ngFor="let vehicle of vehicles" class="ion-no-padding ion-no-margin">
-            <img slot="start" [src]="vehicle.icon" [alt]="'Servicio de grúa para ' + vehicle.name">
+          <ion-item *ngFor="let categoria of categoriasVehiculos; let i = index" 
+                    class="ion-no-padding ion-no-margin"
+                    (click)="openRegistrationModal(categoria)">
+            <img slot="start" [src]="getIconForCategory(categoria.name)" [alt]="'Servicio de grúa para ' + categoria.name">
             <ion-label>
-              <h3>{{ vehicle.name }}</h3>
-              <p>{{ vehicle.description }}</p>
+              <h3>{{ categoria.name }}</h3>
+              <p>{{ getDescriptionForCategory(categoria.name) }}</p>
             </ion-label>
           </ion-item>
         </ion-list>
