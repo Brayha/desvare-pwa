@@ -5,19 +5,23 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-searchbar placeholder="Buscar vehículos" (ionInput)="buscarVehiculos($event)"></ion-searchbar>
-
   <ion-list>
-    <ion-item *ngFor="let categoria of categorias">
-      <ion-label>{{ categoria.name }}</ion-label>
+    <ion-item>
+      <ion-select label="Marca" [(ngModel)]="marcaSeleccionada" (ionChange)="onMarcaChange()">
+        <ion-select-option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select label="Modelo" [(ngModel)]="modeloSeleccionado" [disabled]="!marcaSeleccionada">
+        <ion-select-option *ngFor="let modelo of modelos" [value]="modelo">{{ modelo }}</ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="resultadosBusqueda.length > 0">
-    <ion-item *ngFor="let resultado of resultadosBusqueda">
-      <ion-label>
-        {{ resultado.marca }} {{ resultado.modelo }}
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-item *ngIf="marcaSeleccionada && modeloSeleccionado">
+    <ion-label>
+      Vehículo seleccionado: {{ marcaSeleccionada }} {{ modeloSeleccionado }}
+    </ion-label>
+  </ion-item>
 </ion-content>
