@@ -7,7 +7,13 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-item>
-      <ion-select label="Marca" [(ngModel)]="marcaSeleccionada" (ionChange)="onMarcaChange()">
+      <ion-select label="Categoría" [(ngModel)]="categoriaSeleccionada" (ionChange)="onCategoriaChange()">
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.name }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-select label="Marca" [(ngModel)]="marcaSeleccionada" (ionChange)="onMarcaChange()" [disabled]="!categoriaSeleccionada">
         <ion-select-option *ngFor="let marca of marcas" [value]="marca">{{ marca }}</ion-select-option>
       </ion-select>
     </ion-item>
@@ -19,9 +25,9 @@
     </ion-item>
   </ion-list>
 
-  <ion-item *ngIf="marcaSeleccionada && modeloSeleccionado">
+  <ion-item *ngIf="categoriaSeleccionada && marcaSeleccionada && modeloSeleccionado">
     <ion-label>
-      Vehículo seleccionado: {{ marcaSeleccionada }} {{ modeloSeleccionado }}
+      Vehículo seleccionado: {{ categoriaSeleccionada }} {{ marcaSeleccionada }} {{ modeloSeleccionado }}
     </ion-label>
   </ion-item>
 </ion-content>

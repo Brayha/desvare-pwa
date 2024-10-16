@@ -12,19 +12,42 @@ import { MercadoLibre2Service } from '../services/mercado-libre2.service';
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel, IonSelect, IonSelectOption, CommonModule, FormsModule]
 })
 export class PruebaMercadoPage implements OnInit {
+  categorias: any[] = [];
   marcas: string[] = [];
   modelos: string[] = [];
+  categoriaSeleccionada: string = '';
   marcaSeleccionada: string = '';
   modeloSeleccionado: string = '';
 
   constructor(private mercadoLibreService: MercadoLibre2Service) { }
 
   ngOnInit() {
-    this.cargarMarcas();
+    this.cargarCategorias();
+  }
+
+  cargarCategorias() {
+    this.mercadoLibreService.getCategorias().subscribe(
+      (categorias) => {
+        this.categorias = categorias;
+      },
+      (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    );
+  }
+
+  onCategoriaChange() {
+    this.marcas = [];
+    this.modelos = [];
+    this.marcaSeleccionada = '';
+    this.modeloSeleccionado = '';
+    if (this.categoriaSeleccionada) {
+      this.cargarMarcas();
+    }
   }
 
   cargarMarcas() {
-    this.mercadoLibreService.getMarcas().subscribe(
+    this.mercadoLibreService.getMarcas(this.categoriaSeleccionada).subscribe(
       (marcas) => {
         this.marcas = marcas;
       },
@@ -35,18 +58,21 @@ export class PruebaMercadoPage implements OnInit {
   }
 
   onMarcaChange() {
-    if (this.marcaSeleccionada) {
-      this.mercadoLibreService.getModelos(this.marcaSeleccionada).subscribe(
-        (modelos) => {
-          this.modelos = modelos;
-        },
-        (error) => {
-          console.error('Error al cargar modelos:', error);
-        }
-      );
-    } else {
-      this.modelos = [];
-    }
+    this.modelos = [];
     this.modeloSeleccionado = '';
+    if (this.marcaSeleccionada) {
+      this.cargarModelos();
+    }
+  }
+
+  cargarModelos() {
+    this.mercadoLibreService.getModelos(this.categoriaSeleccionada, this.marcaSeleccionada).subscribe(
+      (modelos) => {
+        this.modelos = modelos;
+      },
+      (error) => {
+        console.error('Error al cargar modelos:', error);
+      }
+    );
   }
 }
