@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Buscador de Vehículos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-searchbar placeholder="Buscar vehículos" (ionInput)="buscarVehiculos($event)"></ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let categoria of categorias">
+      <ion-label>{{ categoria.name }}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="resultadosBusqueda.length > 0">
+    <ion-item *ngFor="let resultado of resultadosBusqueda">
+      <ion-label>
+        {{ resultado.marca }} {{ resultado.modelo }}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

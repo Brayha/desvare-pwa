@@ -9,5 +9,9 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'tabs/tab2',
     pathMatch: 'full',
+  },
+  {
+    path: 'prueba-mercado',
+    loadComponent: () => import('./prueba-mercado/prueba-mercado.page').then( m => m.PruebaMercadoPage)
   }
 ];
