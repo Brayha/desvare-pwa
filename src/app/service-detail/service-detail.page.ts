@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule, IonModal } from '@ionic/angular';
+import { IonicModule, IonModal, ModalController } from '@ionic/angular';
 import { MapaComponent } from '../mapa/mapa.component';
+import { Router } from '@angular/router';
+
 
 interface FormField {
   type: 'textarea' | 'toggle' | 'select' | 'segment';
@@ -27,6 +29,8 @@ interface Problem {
 })
 export class ServiceDetailPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
+  userInfo: any;
+  vehicleInfo: any;
 
   problems: Problem[] = [
     { 
@@ -88,10 +92,39 @@ export class ServiceDetailPage implements OnInit {
   isModalOpen = true;
   formData: {[key: string]: any} = {};
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private modalController: ModalController
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.userInfo = navigation.extras.state['userInfo'];
+      this.vehicleInfo = navigation.extras.state['vehicleInfo'];
+    }
+  }
 
   ngOnInit() {
-    // El modal se abrirá automáticamente al iniciar la página
+    console.log('User Info:', this.userInfo);
+    console.log('Vehicle Info:', this.vehicleInfo);
+
+    // Cerrar cualquier modal abierto
+    this.modalController.getTop().then(modal => {
+      if (modal) {
+        modal.dismiss();
+      }
+    });
+
+    // Inicializar el formulario con los datos del usuario y vehículo
+    this.initializeFormData();
+  }
+
+  initializeFormData() {
+    if (this.userInfo && this.vehicleInfo) {
+      this.formData = {
+        ...this.userInfo,
+        ...this.vehicleInfo
+      };
+    }
   }
 
   selectProblem(problemId: string) {

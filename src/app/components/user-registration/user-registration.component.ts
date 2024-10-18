@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { MercadoLibre2Service } from '../../services/mercado-libre2.service';
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Router, NavigationExtras } from '@angular/router';
 
 interface Vehicle {
   icon: string;
@@ -57,7 +58,8 @@ export class UserRegistrationComponent implements OnInit {
     private modalController: ModalController,
     private mlService: MercadoLibre2Service,
     private formBuilder: FormBuilder,
-    private errorHandler: ErrorHandlerService
+    private errorHandler: ErrorHandlerService,
+    private router: Router
   ) {
     this.personalInfoForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -231,4 +233,34 @@ export class UserRegistrationComponent implements OnInit {
   canDismiss = async (data?: any, role?: string) => {
     return role !== 'gesture';
   };
+
+  onSubmit() {
+    if (this.personalInfoForm.valid) {
+      console.log('Formulario enviado:', this.personalInfoForm.value);
+      
+      const navigationExtras: NavigationExtras = {
+        state: {
+          userInfo: this.personalInfoForm.value,
+          vehicleInfo: {
+            marca: this.marcaSeleccionada,
+            modelo: this.modeloSeleccionado,
+            placa: this.placa
+          }
+        },
+        replaceUrl: true
+      };
+  
+      // Primero cerramos el modal
+      this.modalController.dismiss().then(() => {
+        // Luego navegamos a la página de detalles del servicio
+        this.router.navigate(['/service-detail'], navigationExtras).then(() => {
+          console.log('Navegación exitosa a service-detail');
+        }).catch(error => {
+          console.error('Error durante la navegación:', error);
+        });
+      }).catch(error => {
+        console.error('Error al cerrar el modal:', error);
+      });
+    }
+  }
 }

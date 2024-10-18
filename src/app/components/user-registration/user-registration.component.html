@@ -101,7 +101,7 @@
       <p>Agrega los siguientes datos para que el conductor pueda contactarte</p>
     </div>
 
-    <form [formGroup]="personalInfoForm" (ngSubmit)="finalizarRegistro()" class="login-form">
+    <form [formGroup]="personalInfoForm" (ngSubmit)="onSubmit()" class="login-form">
       <ion-item lines="none" mode="ios" class="input-desvare">
         <img slot="start" src="assets/iconsax-svg/All/bulk/profile-circle.svg" alt="lock">
         <ion-input formControlName="username" type="text" label="Nombre de usuario" required label-placement="floating" placeholder="Como te llamas?"></ion-input>
