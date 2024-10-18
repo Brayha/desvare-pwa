@@ -1,40 +1,28 @@
 <ion-content [fullscreen]="true" class="ion-no-padding">
-
   <div class="container-mapa">
     <div class="header-mapa">
       <img src="../../assets/Logo.svg" alt="Desvare">
     </div>
-
     <app-mapa [destinoSeleccionado]="destinoSeleccionado"></app-mapa>
-
   </div>
 
-  <ion-modal [isOpen]="isModalOpen" [initialBreakpoint]="0.25" [breakpoints]="[0.25, 0.5, 0.75]"
-    [backdropDismiss]="false" [backdropBreakpoint]="0.5" mode="ios" (willDismiss)="onWillDismiss($event)">
-
-
+  <ion-modal [isOpen]="isModalOpen" [initialBreakpoint]="0.4" [breakpoints]="[0.4, 0.4, 0.92]" [backdropDismiss]="false"
+    [backdropBreakpoint]="0.5" mode="ios" (willDismiss)="onWillDismiss($event)">
     <ng-template>
-      <ion-header mode="ios">
-        <ion-toolbar mode="ios">
-          <ion-title>Tu vehiculo</ion-title>
-        </ion-toolbar>
-      </ion-header>
+      <ion-header mode="ios"></ion-header>
       <ion-content class="ion-padding">
-        <ion-item>
+        <p class="title-vehicle">Tu vehiculo</p>
+        <ion-item class="my-vehicle-card">
           <img slot="start" src="../../assets/icon-vehicle-type/Automovil.svg" alt="vehiculo">
           <ion-label>
             <ion-text>
-              <h3>
-                Chevrolet
-              </h3>
-              <p>
-                Spark
-              </p>
+              <h3>Chevrolet</h3>
+              <p>Spark</p>
             </ion-text>
           </ion-label>
-          <ion-text slot="end">
-            <p>ABC123</p>
-          </ion-text>
+          <div slot="end" class="placa">
+            <h5>ABC123</h5>
+          </div>
         </ion-item>
         <div class="destination-card-ruter">
           <ion-list>
@@ -56,57 +44,54 @@
         </div>
 
         <div class="container-radio">
-          <h4>¿Que problema tiene el vehiculo?</h4>
-          <ion-list>
-            <ion-item>
+          <h4>¿Qué problema tiene el vehículo?</h4>
+          <ion-list *ngIf="!showList">
+            <ion-item *ngFor="let problem of problems" (click)="selectProblem(problem.id)"
+              [class.selected]="selectedProblem === problem.id" button="true" class="ion-no-margin ion-no-padding">
+              <img src="assets/iconsax-svg/All/bulk/setting-2.svg" slot="start" alt="location">
               <ion-label>
                 <ion-text>
-                  <h3>Estoy estrellado</h3>
-                  <p>El vehiculo se encuentra estrellado</p>
-                </ion-text>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>
-                <ion-text>
-                  <h3>Estoy en un sotano</h3>
-                  <p>El vehiculo se encuentra en un sotano y no puede salir</p>
-                </ion-text>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>
-                <ion-text>
-                  <h3>Fallas mecánicas o electricas</h3>
-                  <p>El vehiculo no prende o no funciona</p>
-                </ion-text>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>
-                <ion-text>
-                  <h3>Descachado</h3>
-                  <p>Coji un hueco o estoy encunetado y no puedo salir</p>
-                </ion-text>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>
-                <ion-text>
-                  <h3>Salida de los patios</h3>
-                  <p>Necesito sacar el vehiculo de los patios</p>
-                </ion-text>
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-label>
-                <ion-text>
-                  <h3>Otro</h3>
-                  <p>Tengo un problema mas complejo</p>
+                  <h3>{{ problem.title }}</h3>
+                  <p>{{ problem.description }}</p>
                 </ion-text>
               </ion-label>
             </ion-item>
           </ion-list>
+
+          <div *ngIf="showList" class="container-form">
+            <h2>{{ obtenerTituloProblema() }}</h2>
+            <form (ngSubmit)="buscarGrua()">
+              <ng-container *ngFor="let field of obtenerCamposFormulario()">
+                <ion-item *ngIf="field.type === 'textarea'" lines="none" mode="ios" class="input-desvare">
+                  <img slot="start" src="assets/iconsax-svg/All/bold/message.svg" alt="lock">
+                  <ion-input [(ngModel)]="formData[field.name]" [name]="field.name" label="{{ field.label }}"
+                    label-placement="floating" placeholder="Detalla el problema"></ion-input>
+                </ion-item>
+                <ion-item *ngIf="field.type === 'toggle'" lines="none" mode="ios" class="ion-margin-top">
+                  <ion-label>{{ field.label }}</ion-label>
+                  <ion-toggle slot="end" [(ngModel)]="formData[field.name]" [name]="field.name"></ion-toggle>
+                </ion-item>
+                <ion-item *ngIf="field.type === 'select'" lines="none" mode="ios" class="input-desvare">
+                  <ion-select [(ngModel)]="formData[field.name]" [name]="field.name" mode="ios" label="{{ field.label }}" label-placement="floating">
+                    <ion-select-option *ngFor="let option of field.options" [value]="option">{{ option
+                      }}</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <ion-segment *ngIf="field.type === 'segment'" [(ngModel)]="formData[field.name]" [name]="field.name"
+                  mode="ios">
+                  <ion-segment-button *ngFor="let option of field.options" [value]="option">
+                    <ion-label>{{ option }}</ion-label>
+                  </ion-segment-button>
+                </ion-segment>
+              </ng-container>
+              <div class="container-button">
+                <ion-button (click)="showList = false; selectedProblem = null" color="white"
+                  mode="ios">Volver</ion-button>
+                <ion-button expand="block" size="large" mode="ios" type="submit" class="full-width-button-style">Buscar
+                  grúa</ion-button>
+              </div>
+            </form>
+          </div>
         </div>
       </ion-content>
     </ng-template>

@@ -99,48 +99,6 @@
     }
 }
 
-// Vehicle Card
-.my-vehicle-card {
-    border: 1px solid #E5E5E5;
-    border-radius: 16px;
-    margin-bottom: 16px;
-    background-color: #fff;
-    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
-
-    h3 {
-        font-size: 16px;
-        font-weight: 600;
-        color: #4B5563;
-    }
-
-    p {
-        font-size: 14px;
-        font-weight: 400;
-        color: #4B5563;
-    }
-}
-
-// License Plate
-.placa {
-    border-radius: 4px;
-    border: 1px solid #EAB308;
-    background: #FBBF24;
-    box-shadow: 0px 0px 6px 0px rgba(234, 179, 8, 0.80);
-    display: flex;
-    padding: 6px 8px;
-    justify-content: center;
-    align-items: center;
-
-    h5 {
-        font-family: 'Gilroy', sans-serif !important;
-        overflow: hidden;
-        color: #713F12;
-        text-overflow: ellipsis;
-        font-size: 14px;
-        font-weight: 700;
-        margin: 0;
-    }
-}
 
 // Login Header
 .head-login {

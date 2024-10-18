@@ -2,9 +2,9 @@
     position: relative;
     width: 100%;
     height: 100%;
-  }
-  
-  .header-mapa {
+}
+
+.header-mapa {
     position: fixed;
     z-index: 1000;
     top: 0;
@@ -14,65 +14,113 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  
+
     img {
-      display: block;
-      height: 32px;
+        display: block;
+        height: 32px;
     }
-  }
-  
-  app-mapa {
+}
+
+app-mapa {
     width: 100%;
-    height: 80%;
+    height: 60%;
     display: block;
-  }
+}
 
 
 
 .destination-card-ruter {
-    padding: 16px;
     background-color: transparent !important;
-  
+
     .ion-item {
-      padding: 0;
+        padding: 0;
     }
-  
+
     img {
-      display: flex;
-      width: var(--Padding-24, 24px);
-      height: var(--Padding-24, 24px);
-      justify-content: center;
-      align-items: center;
-      filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(5000%) hue-rotate(214deg) brightness(102%) contrast(107%);
+        display: flex;
+        width: var(--Padding-24, 24px);
+        height: var(--Padding-24, 24px);
+        justify-content: center;
+        align-items: center;
+        filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(5000%) hue-rotate(214deg) brightness(102%) contrast(107%);
     }
-  
+
     .icon-destino {
-      filter: brightness(0) saturate(100%) invert(48%) sepia(95%) saturate(5824%) hue-rotate(359deg) brightness(102%) contrast(103%);
+        filter: brightness(0) saturate(100%) invert(48%) sepia(95%) saturate(5824%) hue-rotate(359deg) brightness(102%) contrast(103%);
     }
-  
+
     h2 {
-      font-size: 24px;
-      font-weight: 700;
-      color: #223D62;
+        font-size: 24px;
+        font-weight: 700;
+        color: #223D62;
     }
-  
+
     h3 {
-      font-size: 16px;
-      font-weight: 400;
+        font-size: 16px;
+        font-weight: 400;
     }
-  
+
     p {
-      font-size: 14px;
-      font-weight: 800;
+        font-size: 14px;
+        font-weight: 800;
     }
-  
+
     .edit-button {
-      --padding-start: 16px;
-      --padding-end: 16px;
-      --padding-top: 12px;
-      --padding-bottom: 12px;
-      background-color: white;
-      --background: white;
-      color: #9CA3AF;
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        background-color: white;
+        --background: white;
+        color: #9CA3AF;
     }
-  }
+}
+
+
+
+.container-radio {
+    padding: 16px 0;
+
+    h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #9CA3AF;
+        margin: 0 0 8px 0;
+        font-family: 'Gilroy', sans-serif;
+        padding-top: 16px;
+        border-top: 1px solid #E5E7EB;
+    }
+
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #4B5563;
+        margin: 0 0 2px 0;
+        font-family: 'Gilroy', sans-serif;
+    }
+
+    p {
+        font-size: 12px;
+        font-weight: 500;
+        color: #9CA3AF;
+        margin: 0;
+        font-family: 'Gilroy', sans-serif;
+    }
+}
+
+.container-form {
+    h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: #223D62;
+        font-family: 'Gilroy', sans-serif;
+        margin: 0 0 16px 0;
+    }
+}
+
+.container-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}

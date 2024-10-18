@@ -105,7 +105,7 @@ ion-segment {
 /* Ion Item Styles */
 .custom-border-item,
 ion-item {
-  --border-color: #F3F4F6 !important;
+  --border-color: #E5E7EB !important;
 }
 
 .custom-item-right {
@@ -202,4 +202,61 @@ ion-item {
     color: #4caf50;
     font-size: 20px;
   }
+}
+
+
+
+
+.title-vehicle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #9CA3AF;
+  margin: 0 0 8px 0;
+  font-family: 'Gilroy', sans-serif;
+}
+
+// Vehicle Card
+.my-vehicle-card {
+  border: 1px solid #E5E5E5;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+
+  h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #4B5563;
+  }
+
+  p {
+      font-size: 14px;
+      font-weight: 400;
+      color: #4B5563;
+  }
+  // License Plate
+  .placa {
+      border-radius: 4px;
+      border: 1px solid #EAB308;
+      background: #FBBF24;
+      box-shadow: 0px 0px 6px 0px rgba(234, 179, 8, 0.80);
+      display: flex;
+      padding: 6px 8px;
+      justify-content: center;
+      align-items: center;
+
+      h5 {
+          font-family: 'Gilroy', sans-serif !important;
+          overflow: hidden;
+          color: #713F12;
+          text-overflow: ellipsis;
+          font-size: 14px;
+          font-weight: 700;
+          margin: 0;
+      }
+  }
+}
+
+.full-width-button-style {
+  width: 100% !important;
 }
