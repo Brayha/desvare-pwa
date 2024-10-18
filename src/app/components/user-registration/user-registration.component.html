@@ -22,7 +22,7 @@
 
 <ion-content class="ion-padding">
 
-  <ion-item class="my-vehicle-card">
+  <ion-item class="my-vehicle-card" [@fadeInOut]>
     <img slot="start" [src]="selectedVehicle.icon || '../../assets/icon-vehicle-type/Automovil.svg'" [alt]="selectedVehicle.name || 'vehículo'">
     <ion-label>
       <ion-text *ngIf="!marcaSeleccionada">
@@ -39,9 +39,9 @@
   </ion-item>
 
   <!-- Sección de selección de vehículo -->
-  <div *ngIf="currentStep === 'vehicle-selection'">
+  <div *ngIf="currentStep === 'vehicle-selection'"  [@fadeInOut]>
     <!-- Sección de Marcas -->
-    <div *ngIf="!marcaSeleccionada">
+    <div *ngIf="!marcaSeleccionada" [@fadeInOut]>
       <ion-searchbar 
         [(ngModel)]="searchTerm" 
         (ionChange)="filterMarcas()" 
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Sección de Modelos -->
-    <div *ngIf="marcaSeleccionada && !modeloSeleccionado">
+    <div *ngIf="marcaSeleccionada && !modeloSeleccionado"  [@fadeInOut]>
 
       <ion-searchbar 
         [(ngModel)]="searchTerm" 
@@ -73,7 +73,7 @@
     </div>
 
     <!-- Sección de Placa -->
-    <div *ngIf="marcaSeleccionada && modeloSeleccionado">
+    <div *ngIf="marcaSeleccionada && modeloSeleccionado"  [@fadeInOut]>
 
       <div class="title-form">
         <h2>¿Cómo es la placa?</h2>
@@ -94,7 +94,7 @@
   </div>
 
   <!-- Sección de información personal -->
-  <div *ngIf="currentStep === 'personal-info'">
+  <div *ngIf="currentStep === 'personal-info'"  [@fadeInOut]>
 
     <div class="title-form">
       <h2>Y por ultimo!</h2>
@@ -138,6 +138,6 @@
     </form>
   </div>
 
-  <ion-spinner *ngIf="loading"></ion-spinner>
-  <ion-text color="danger" *ngIf="error">{{ error }}</ion-text>
+  <ion-spinner *ngIf="loading"  [@fadeInOut]></ion-spinner>
+  <ion-text color="danger" *ngIf="error" [@fadeInOut]>{{ error }}</ion-text>
 </ion-content>

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MercadoLibre2Service } from '../../services/mercado-libre2.service';
 import { ErrorHandlerService } from '../../services/error-handler.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 interface Vehicle {
   icon: string;
@@ -19,6 +20,17 @@ interface Vehicle {
   selector: 'app-user-registration',
   templateUrl: './user-registration.component.html',
   styleUrls: ['./user-registration.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('300ms', style({ opacity: 0 }))
+      ])
+    ])
+  ],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
   providers: [MercadoLibre2Service]
