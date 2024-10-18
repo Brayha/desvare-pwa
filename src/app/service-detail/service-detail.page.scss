@@ -1,0 +1,78 @@
+.container-mapa {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .header-mapa {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    img {
+      display: block;
+      height: 32px;
+    }
+  }
+  
+  app-mapa {
+    width: 100%;
+    height: 80%;
+    display: block;
+  }
+
+
+
+.destination-card-ruter {
+    padding: 16px;
+    background-color: transparent !important;
+  
+    .ion-item {
+      padding: 0;
+    }
+  
+    img {
+      display: flex;
+      width: var(--Padding-24, 24px);
+      height: var(--Padding-24, 24px);
+      justify-content: center;
+      align-items: center;
+      filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(5000%) hue-rotate(214deg) brightness(102%) contrast(107%);
+    }
+  
+    .icon-destino {
+      filter: brightness(0) saturate(100%) invert(48%) sepia(95%) saturate(5824%) hue-rotate(359deg) brightness(102%) contrast(103%);
+    }
+  
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #223D62;
+    }
+  
+    h3 {
+      font-size: 16px;
+      font-weight: 400;
+    }
+  
+    p {
+      font-size: 14px;
+      font-weight: 800;
+    }
+  
+    .edit-button {
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --padding-top: 12px;
+      --padding-bottom: 12px;
+      background-color: white;
+      --background: white;
+      color: #9CA3AF;
+    }
+  }
