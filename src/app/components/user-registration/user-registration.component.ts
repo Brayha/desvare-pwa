@@ -236,30 +236,21 @@ export class UserRegistrationComponent implements OnInit {
 
   onSubmit() {
     if (this.personalInfoForm.valid) {
-      console.log('Formulario enviado:', this.personalInfoForm.value);
-      
       const navigationExtras: NavigationExtras = {
         state: {
           userInfo: this.personalInfoForm.value,
           vehicleInfo: {
             marca: this.marcaSeleccionada,
             modelo: this.modeloSeleccionado,
-            placa: this.placa
-          }
+            placa: this.placa,
+            categoria: this.selectedVehicle.type // Asegúrate de tener esta información
+          },
         },
         replaceUrl: true
       };
   
-      // Primero cerramos el modal
       this.modalController.dismiss().then(() => {
-        // Luego navegamos a la página de detalles del servicio
-        this.router.navigate(['/service-detail'], navigationExtras).then(() => {
-          console.log('Navegación exitosa a service-detail');
-        }).catch(error => {
-          console.error('Error durante la navegación:', error);
-        });
-      }).catch(error => {
-        console.error('Error al cerrar el modal:', error);
+        this.router.navigate(['/service-detail'], navigationExtras);
       });
     }
   }

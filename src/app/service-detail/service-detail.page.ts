@@ -31,6 +31,8 @@ export class ServiceDetailPage implements OnInit {
   @ViewChild(IonModal) modal!: IonModal;
   userInfo: any;
   vehicleInfo: any;
+  origen: any;
+  destino: any;
 
   problems: Problem[] = [
     { 
@@ -100,12 +102,16 @@ export class ServiceDetailPage implements OnInit {
     if (navigation?.extras.state) {
       this.userInfo = navigation.extras.state['userInfo'];
       this.vehicleInfo = navigation.extras.state['vehicleInfo'];
+      this.origen = navigation.extras.state['origen'];
+      this.destino = navigation.extras.state['destino'];
     }
   }
 
   ngOnInit() {
     console.log('User Info:', this.userInfo);
     console.log('Vehicle Info:', this.vehicleInfo);
+    console.log('Origen:', this.origen);
+    console.log('Destino:', this.destino);
 
     // Cerrar cualquier modal abierto
     this.modalController.getTop().then(modal => {
@@ -162,7 +168,14 @@ export class ServiceDetailPage implements OnInit {
   }
 
   buscarGrua() {
-    console.log('Datos del formulario:', this.formData);
+    console.log('Datos del servicio:', {
+      usuario: this.userInfo,
+      vehiculo: this.vehicleInfo,
+      origen: this.origen,
+      destino: this.destino,
+      problema: this.selectedProblem,
+      detallesProblema: this.formData
+    });
     // Aquí iría la lógica para buscar la grúa
   }
 }

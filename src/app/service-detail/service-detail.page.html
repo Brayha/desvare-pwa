@@ -11,17 +11,17 @@
     <ng-template>
       <ion-header mode="ios"></ion-header>
       <ion-content class="ion-padding">
-        <p class="title-vehicle">Tu vehiculo</p>
+        <p class="title-vehicle">Tu vehículo</p>
         <ion-item class="my-vehicle-card">
           <img slot="start" src="../../assets/icon-vehicle-type/Automovil.svg" alt="vehiculo">
           <ion-label>
             <ion-text>
-              <h3>Chevrolet</h3>
-              <p>Spark</p>
+              <h3>{{ vehicleInfo?.marca }}</h3>
+              <p>{{ vehicleInfo?.modelo }}</p>
             </ion-text>
           </ion-label>
           <div slot="end" class="placa">
-            <h5>ABC123</h5>
+            <h5>{{ vehicleInfo?.placa }}</h5>
           </div>
         </ion-item>
         <div class="destination-card-ruter">
@@ -30,14 +30,14 @@
               <img slot="start" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
               <ion-label>
                 <p>Origen:</p>
-                <h3>Diagonal 79a bis # 52-67</h3>
+                <h3>{{ origen?.address }}</h3>
               </ion-label>
             </ion-item>
             <ion-item lines="none" class="ion-no-margin ion-no-padding">
               <img slot="start" class="icon-destino" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
               <ion-label>
                 <p>Destino:</p>
-                <h3>Calle 2 # 93d-66</h3>
+                <h3>{{ destino?.address }}</h3>
               </ion-label>
             </ion-item>
           </ion-list>
