@@ -1,5 +1,16 @@
 <ion-header mode="ios" class="ion-padding-vertical">
   <ion-toolbar mode="ios" class="header-user-registration">
+    <ion-buttons slot="start" *ngIf="marcaSeleccionada">
+      <ion-button (click)="backToMarcas()" *ngIf="!modeloSeleccionado" mode="ios">
+        <img src="assets/iconsax-svg/All/linear/arrow-left.svg" alt="back">
+      </ion-button>
+      <ion-button (click)="backToModelos()" *ngIf="modeloSeleccionado && currentStep === 'vehicle-selection'" mode="ios">
+        <img src="assets/iconsax-svg/All/linear/arrow-left.svg" alt="back">
+      </ion-button>
+      <ion-button (click)="backToPlaca()" *ngIf="currentStep === 'personal-info'" mode="ios">
+        <img src="assets/iconsax-svg/All/linear/arrow-left.svg" alt="back">
+      </ion-button>
+    </ion-buttons>
     <ion-title slot="start">{{ getTitleForCurrentStep() }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="dismissModal()">
@@ -12,10 +23,10 @@
 <ion-content class="ion-padding">
 
   <ion-item class="my-vehicle-card">
-    <img slot="start" src="../../assets/icon-vehicle-type/Automovil.svg" alt="vehiculo">
+    <img slot="start" [src]="selectedVehicle.icon || '../../assets/icon-vehicle-type/Automovil.svg'" [alt]="selectedVehicle.name || 'vehículo'">
     <ion-label>
       <ion-text *ngIf="!marcaSeleccionada">
-        <h3>Carro y camioneta</h3>
+        <h3>{{ selectedVehicle.description || 'Carro y camioneta' }}</h3>
       </ion-text>
       <ion-text *ngIf="marcaSeleccionada">
         <h3>{{ marcaSeleccionada }}</h3>
@@ -34,11 +45,12 @@
       <ion-searchbar 
         [(ngModel)]="searchTerm" 
         (ionChange)="filterMarcas()" 
-        placeholder="Buscar marca">
+        placeholder="Buscar marca"
+        mode="ios">
       </ion-searchbar>
 
-      <ion-list>
-        <ion-item *ngFor="let marca of filteredMarcas" (click)="selectMarca(marca)">
+      <ion-list mode="ios">
+        <ion-item *ngFor="let marca of filteredMarcas" (click)="selectMarca(marca)" mode="ios">
           <ion-label>{{ marca }}</ion-label>
         </ion-item>
       </ion-list>
@@ -46,19 +58,15 @@
 
     <!-- Sección de Modelos -->
     <div *ngIf="marcaSeleccionada && !modeloSeleccionado">
-      <ion-item>
-        <ion-label>Marca seleccionada: {{ marcaSeleccionada }}</ion-label>
-        <ion-button slot="end" (click)="backToMarcas()">Cambiar</ion-button>
-      </ion-item>
 
       <ion-searchbar 
         [(ngModel)]="searchTerm" 
         (ionChange)="filterModelos()" 
-        placeholder="Buscar modelo">
+        placeholder="Buscar modelo" mode="ios">
       </ion-searchbar>
 
-      <ion-list>
-        <ion-item *ngFor="let modelo of filteredModelos" (click)="selectModelo(modelo)">
+      <ion-list mode="ios">
+        <ion-item *ngFor="let modelo of filteredModelos" (click)="selectModelo(modelo)" mode="ios">
           <ion-label>{{ modelo }}</ion-label>
         </ion-item>
       </ion-list>
@@ -78,7 +86,7 @@
           <ion-input [(ngModel)]="placa" label="Placa del vehículo" name="placa" required label-placement="floating" placeholder="ABC-123"></ion-input>
         </ion-item>
 
-        <ion-button expand="block" type="submit" [disabled]="!placa">
+        <ion-button expand="block" type="submit" [disabled]="!placa" mode="ios">
           Continuar
         </ion-button>
       </form>
@@ -124,7 +132,7 @@
         Por favor, ingrese un número celular válido.
       </ion-text>
 
-      <ion-button expand="block" type="submit" [disabled]="personalInfoForm.invalid">
+      <ion-button expand="block" type="submit" mode="ios" [disabled]="personalInfoForm.invalid">
         Finalizar registro
       </ion-button>
     </form>

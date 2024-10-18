@@ -15,7 +15,6 @@ interface Vehicle {
   placa?: string;
 }
 
-
 @Component({
   selector: 'app-user-registration',
   templateUrl: './user-registration.component.html',
@@ -40,6 +39,7 @@ export class UserRegistrationComponent implements OnInit {
   placa: string = '';
   currentStep: 'vehicle-selection' | 'personal-info' = 'vehicle-selection';
   personalInfoForm: FormGroup;
+  placaIngresada: boolean = false;
 
   constructor(
     private modalController: ModalController,
@@ -112,19 +112,38 @@ export class UserRegistrationComponent implements OnInit {
 
   selectMarca(marca: string) {
     this.marcaSeleccionada = marca;
+    this.modeloSeleccionado = '';
+    this.placaIngresada = false;
     this.cargarModelos();
   }
 
   selectModelo(modelo: string) {
     this.modeloSeleccionado = modelo;
+    this.placaIngresada = false;
     this.searchTerm = '';
+  }
+
+  ingresarPlaca() {
+    this.placaIngresada = true;
   }
 
   backToMarcas() {
     this.marcaSeleccionada = '';
     this.modeloSeleccionado = '';
+    this.placaIngresada = false;
     this.searchTerm = '';
     this.filterMarcas();
+  }
+
+  backToModelos() {
+    this.modeloSeleccionado = '';
+    this.placaIngresada = false;
+    this.placa = '';
+  }
+
+  backToPlaca() {
+    this.currentStep = 'vehicle-selection';
+    this.placaIngresada = false;
   }
 
   // Métodos de registro y finalización
@@ -133,6 +152,7 @@ export class UserRegistrationComponent implements OnInit {
       this.error = 'Por favor, ingrese la placa del vehículo.';
       return;
     }
+    this.placaIngresada = true;
     if (this.isAddingNewVehicle) {
       this.finalizarRegistro();
     } else {
