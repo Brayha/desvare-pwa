@@ -19,3 +19,33 @@
         font-weight: 600;
     }
 }
+
+.title-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    align-self: stretch;
+    padding: 24px 0;
+
+    h2 {
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        font-family: 'Gilroy', sans-serif;
+        color: #223D62;
+        text-align: center;
+        margin: 0;
+    }
+
+    p {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        color: #6B7280;
+        text-align: center;
+        font-family: 'Gilroy', sans-serif;
+        margin: 0;
+    }
+}

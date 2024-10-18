@@ -10,6 +10,23 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+  <ion-item class="my-vehicle-card">
+    <img slot="start" src="../../assets/icon-vehicle-type/Automovil.svg" alt="vehiculo">
+    <ion-label>
+      <ion-text *ngIf="!marcaSeleccionada">
+        <h3>Carro y camioneta</h3>
+      </ion-text>
+      <ion-text *ngIf="marcaSeleccionada">
+        <h3>{{ marcaSeleccionada }}</h3>
+        <p>{{ modeloSeleccionado }}</p>
+      </ion-text>
+    </ion-label>
+    <div slot="end" class="placa" *ngIf="placa">
+      <h5>{{ placa }}</h5>
+    </div>
+  </ion-item>
+
   <!-- Sección de selección de vehículo -->
   <div *ngIf="currentStep === 'vehicle-selection'">
     <!-- Sección de Marcas -->
@@ -49,20 +66,16 @@
 
     <!-- Sección de Placa -->
     <div *ngIf="marcaSeleccionada && modeloSeleccionado">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Vehículo seleccionado</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <p>Marca: {{ marcaSeleccionada }}</p>
-          <p>Modelo: {{ modeloSeleccionado }}</p>
-        </ion-card-content>
-      </ion-card>
 
-      <form (ngSubmit)="registerUser()">
-        <ion-item>
-          <ion-label position="floating">Placa del vehículo</ion-label>
-          <ion-input [(ngModel)]="placa" name="placa" required></ion-input>
+      <div class="title-form">
+        <h2>¿Cómo es la placa?</h2>
+        <p>Escribe la placa del vehículo para que el conductor te logre identificar</p>
+      </div>
+
+      <form (ngSubmit)="registerUser()" class="login-form">
+        <ion-item lines="none" mode="ios" class="input-desvare">
+          <img slot="start" src="assets/iconsax-svg/All/bulk/barcode.svg" alt="lock">
+          <ion-input [(ngModel)]="placa" label="Placa del vehículo" name="placa" required label-placement="floating" placeholder="ABC-123"></ion-input>
         </ion-item>
 
         <ion-button expand="block" type="submit" [disabled]="!placa">
@@ -74,29 +87,24 @@
 
   <!-- Sección de información personal -->
   <div *ngIf="currentStep === 'personal-info'">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Vehículo seleccionado</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Marca: {{ marcaSeleccionada }}</p>
-        <p>Modelo: {{ modeloSeleccionado }}</p>
-        <p>Placa: {{ placa }}</p>
-      </ion-card-content>
-    </ion-card>
 
-    <form [formGroup]="personalInfoForm" (ngSubmit)="finalizarRegistro()">
-      <ion-item>
-        <ion-label position="floating">Nombre de usuario</ion-label>
-        <ion-input formControlName="username" type="text"></ion-input>
+    <div class="title-form">
+      <h2>Y por ultimo!</h2>
+      <p>Agrega los siguientes datos para que el conductor pueda contactarte</p>
+    </div>
+
+    <form [formGroup]="personalInfoForm" (ngSubmit)="finalizarRegistro()" class="login-form">
+      <ion-item lines="none" mode="ios" class="input-desvare">
+        <img slot="start" src="assets/iconsax-svg/All/bulk/profile-circle.svg" alt="lock">
+        <ion-input formControlName="username" type="text" label="Nombre de usuario" required label-placement="floating" placeholder="Como te llamas?"></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="personalInfoForm.get('username')?.hasError('required') && personalInfoForm.get('username')?.touched">
         El nombre de usuario es requerido.
       </ion-text>
 
-      <ion-item>
-        <ion-label position="floating">Email</ion-label>
-        <ion-input formControlName="email" type="email"></ion-input>
+      <ion-item lines="none" mode="ios" class="input-desvare">
+        <img slot="start" src="assets/iconsax-svg/All/bulk/message.svg" alt="lock">
+        <ion-input formControlName="email" type="email" label="Email" required label-placement="floating" placeholder="tuemail@ejemplo.com"></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="personalInfoForm.get('email')?.hasError('required') && personalInfoForm.get('email')?.touched">
         El email es requerido.
@@ -105,9 +113,9 @@
         Por favor, ingrese un email válido.
       </ion-text>
 
-      <ion-item>
-        <ion-label position="floating">Número celular</ion-label>
-        <ion-input formControlName="phone" type="tel"></ion-input>
+      <ion-item lines="none" mode="ios" class="input-desvare">
+        <img slot="start" src="assets/iconsax-svg/All/bulk/call.svg" alt="lock">
+        <ion-input formControlName="phone" type="tel" label="Número celular" required label-placement="floating" placeholder="000 000 0000"></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="personalInfoForm.get('phone')?.hasError('required') && personalInfoForm.get('phone')?.touched">
         El número celular es requerido.

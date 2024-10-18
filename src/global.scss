@@ -205,6 +205,12 @@ ion-item {
 }
 
 
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-self: stretch;
+}
 
 
 .title-vehicle {
