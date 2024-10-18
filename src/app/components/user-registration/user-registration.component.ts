@@ -240,10 +240,10 @@ export class UserRegistrationComponent implements OnInit {
         state: {
           userInfo: this.personalInfoForm.value,
           vehicleInfo: {
+            ...this.selectedVehicle, // Esto debería incluir icon, name, description, type
             marca: this.marcaSeleccionada,
             modelo: this.modeloSeleccionado,
-            placa: this.placa,
-            categoria: this.selectedVehicle.type // Asegúrate de tener esta información
+            placa: this.placa
           },
         },
         replaceUrl: true

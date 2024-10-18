@@ -105,6 +105,7 @@ export class ServiceDetailPage implements OnInit {
       this.origen = navigation.extras.state['origen'];
       this.destino = navigation.extras.state['destino'];
     }
+    console.log('Vehicle Info recibida:', this.vehicleInfo); // Para depuración
   }
 
   ngOnInit() {
@@ -122,6 +123,17 @@ export class ServiceDetailPage implements OnInit {
 
     // Inicializar el formulario con los datos del usuario y vehículo
     this.initializeFormData();
+  }
+
+  getDefaultIcon(type: string): string {
+    const defaultIcons: { [key: string]: string } = {
+      'Automovil': '../../assets/icon-vehicle-type/Automovil.svg',
+      'Camioneta': '../../assets/icon-vehicle-type/Camioneta.svg',
+      'Moto': '../../assets/icon-vehicle-type/Moto.svg',
+      'Camion': '../../assets/icon-vehicle-type/Camion.svg',
+      'Bus': '../../assets/icon-vehicle-type/Bus.svg',
+    };
+    return defaultIcons[type] || '../../assets/icon-vehicle-type/Automovil.svg';
   }
 
   initializeFormData() {

@@ -13,7 +13,7 @@
       <ion-content class="ion-padding">
         <p class="title-vehicle">Tu vehículo</p>
         <ion-item class="my-vehicle-card">
-          <img slot="start" src="../../assets/icon-vehicle-type/Automovil.svg" alt="vehiculo">
+          <img slot="start" [src]="vehicleInfo?.icon || '../../assets/icon-vehicle-type/Automovil.svg'" [alt]="vehicleInfo?.name || 'vehículo'">
           <ion-label>
             <ion-text>
               <h3>{{ vehicleInfo?.marca }}</h3>
