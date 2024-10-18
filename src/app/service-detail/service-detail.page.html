@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true" class="ion-no-padding">
+  <app-mapa [destinoSeleccionado]="destinoSeleccionado"></app-mapa>
+
+  <ion-modal [isOpen]="isModalOpen" [initialBreakpoint]="0.25" [breakpoints]="[0.25, 0.5, 0.75]" [canDismiss]="false"
+    mode="ios" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header mode="ios">
+        <ion-toolbar mode="ios">
+          <ion-title>Tu vehiculo</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <ion-item>
+            <img slot="start" src="../../assets/icon-vehicle-type/Automovil.svg" alt="vehiculo">
+            <ion-label>
+              <ion-text>
+                <h3>
+                  Chevrolet
+                </h3>
+                <p>
+                  Spark
+                </p>
+              </ion-text>
+            </ion-label>
+            <ion-text slot="end">
+              <p>ABC123</p>
+            </ion-text>
+          </ion-item>
+          <ion-item class="ion-no-margin ion-no-padding">
+            <img slot="start" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+            <ion-label>
+              <p>Origen:</p>
+              <h3>Diagonal 79a bis # 52-67</h3>
+            </ion-label>
+          </ion-item>
+          <ion-item lines="none" class="ion-no-margin ion-no-padding">
+            <img slot="start" class="icon-destino" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+            <ion-label>
+              <p>Destino:</p>
+              <h3>Calle 2 # 93d-66</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-button expand="block" (click)="confirm()">Confirmar servicio</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
