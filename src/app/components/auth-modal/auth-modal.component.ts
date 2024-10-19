@@ -160,7 +160,7 @@ export class AuthModalComponent implements OnInit {
     return await modal.present();
   }
 
-  handleRegisteredUser(userData: any) {
+  async handleRegisteredUser(userData: any) {
     this.logeado = true;
     this.nombreUsuario = userData.userInfo.username;
     
@@ -181,7 +181,17 @@ export class AuthModalComponent implements OnInit {
       vehicles: this.savedVehicles
     }));
     
-    this.presentWelcomeToast();
+    await this.presentWelcomeToast();
+    
+    // Cerrar el modal después de un breve retraso para que el usuario pueda ver el mensaje de bienvenida
+    setTimeout(() => {
+      this.modalController.dismiss({
+        logged: true,
+        user: userData.userInfo,
+        vehicle: this.savedVehicles[0],
+        openConfirmService: true
+      });
+    }, 0);
   }
   
   // Métodos de carga de datos de usuario

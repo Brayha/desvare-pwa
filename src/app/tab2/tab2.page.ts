@@ -32,25 +32,37 @@ export class Tab2Page {
     this.mostrarBusqueda = true;
   }
   
+  async openAuthModal() {
+    const modal = await this.modalController.create({
+      component: AuthModalComponent,
+      // ... otras opciones ...
+    });
+  
+    const { data } = await modal.onDidDismiss();
+    if (data && data.logged) {
+      console.log('Usuario registrado:', data.user);
+      console.log('Vehículo registrado:', data.vehicle);
+      
+      if (data.openConfirmService) {
+        this.openConfirmServiceModal();
+      }
+    }
+  
+    return await modal.present();
+  }
+  
   async openConfirmServiceModal() {
     const modal = await this.modalController.create({
       component: ConfirmServiceModalComponent,
-      cssClass: 'confirm-service-modal',
-      backdropDismiss: false,
-      breakpoints: [0.4, 0.4, 0.92],
-      initialBreakpoint: 0.4,
-      backdropBreakpoint: 0.5
+      cssClass: 'confirm-service-modal'
     });
-
+  
     await modal.present();
-
+  
     const { data } = await modal.onDidDismiss();
     if (data && data.confirmed) {
       console.log('Servicio confirmado');
-      // Aquí puedes agregar la lógica para cuando el servicio es confirmado
-    } else {
-      console.log('Servicio cancelado');
-      // Aquí puedes agregar la lógica para cuando el servicio es cancelado
+      // Aquí puedes agregar la lógica para manejar la confirmación del servicio
     }
   }
 
@@ -69,15 +81,13 @@ export class Tab2Page {
     await modal.present();
   
     const { data } = await modal.onDidDismiss();
-    if (data && data.userRegistered) {
-      this.router.navigate(['/service-detail'], {
-        state: {
-          userInfo: data.userInfo,
-          vehicleInfo: data.vehicleInfo,
-          origen: { address: this.currentAddress },
-          destino: this.destinoSeleccionado
-        }
-      });
+    if (data && data.logged) {
+      console.log('Usuario registrado:', data.user);
+      console.log('Vehículo registrado:', data.vehicle);
+      
+      if (data.openConfirmService) {
+        await this.openConfirmServiceModal();
+      }
     }
   }
 
