@@ -5,13 +5,14 @@ import { MapaComponent } from '../mapa/mapa.component';
 import { CommonModule } from '@angular/common';
 import { AuthModalComponent } from '../components/auth-modal/auth-modal.component';
 import { Router } from '@angular/router';
+import { ConfirmServiceModalComponent } from '../confirm-service-modal/confirm-service-modal.component';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
-  imports: [IonicModule, MapaComponent, ModalAddressComponent, CommonModule, AuthModalComponent]
+  imports: [IonicModule, MapaComponent, ModalAddressComponent, CommonModule, AuthModalComponent, ConfirmServiceModalComponent]
 })
 export class Tab2Page {
   @ViewChild(MapaComponent) mapaComponent!: MapaComponent;
@@ -31,6 +32,27 @@ export class Tab2Page {
     this.mostrarBusqueda = true;
   }
   
+  async openConfirmServiceModal() {
+    const modal = await this.modalController.create({
+      component: ConfirmServiceModalComponent,
+      cssClass: 'confirm-service-modal',
+      backdropDismiss: false,
+      breakpoints: [0.4, 0.4, 0.92],
+      initialBreakpoint: 0.4,
+      backdropBreakpoint: 0.5
+    });
+
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    if (data && data.confirmed) {
+      console.log('Servicio confirmado');
+      // Aquí puedes agregar la lógica para cuando el servicio es confirmado
+    } else {
+      console.log('Servicio cancelado');
+      // Aquí puedes agregar la lógica para cuando el servicio es cancelado
+    }
+  }
 
   async iniciarProceso() {
     const modal = await this.modalController.create({
