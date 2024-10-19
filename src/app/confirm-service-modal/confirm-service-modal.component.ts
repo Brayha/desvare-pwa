@@ -3,14 +3,7 @@ import { IonicModule, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-confirm-service-modal',
-  template: `
-    <ion-content class="ion-padding">
-      <h1>Confirmar Servicio</h1>
-      <p>¿Estás seguro de que deseas confirmar este servicio?</p>
-      <ion-button (click)="confirmar()">Confirmar</ion-button>
-      <ion-button (click)="cancelar()">Cancelar</ion-button>
-    </ion-content>
-  `,
+  templateUrl: './confirm-service-modal.component.html',
   standalone: true,
   imports: [IonicModule]
 })

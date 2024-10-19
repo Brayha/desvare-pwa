@@ -52,12 +52,20 @@ export class Tab2Page {
   }
   
   async openConfirmServiceModal() {
+    console.log('Intentando abrir el modal de confirmación de servicio');
     const modal = await this.modalController.create({
       component: ConfirmServiceModalComponent,
-      cssClass: 'confirm-service-modal'
+      cssClass: 'confirm-service-modal',
+      backdropDismiss: false,
+      breakpoints: [0.4, 0.4, 0.92],
+      initialBreakpoint: 0.4,
+      backdropBreakpoint: 0.5,
+      mode: 'ios'
     });
   
+    console.log('Modal creado, intentando presentarlo');
     await modal.present();
+    console.log('Modal presentado');
   
     const { data } = await modal.onDidDismiss();
     if (data && data.confirmed) {
