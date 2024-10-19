@@ -39,6 +39,8 @@ interface Vehicle {
 export class UserRegistrationComponent implements OnInit {
   @Input() selectedVehicle: Vehicle = {} as Vehicle;
   @Input() isAddingNewVehicle: boolean = false;
+  @Input() origen: any;
+  @Input() destino: any;
 
   marcas: string[] = [];
   modelos: string[] = [];
@@ -113,13 +115,13 @@ export class UserRegistrationComponent implements OnInit {
 
   // Métodos de filtrado y selección
   filterMarcas() {
-    this.filteredMarcas = this.marcas.filter(marca => 
+    this.filteredMarcas = this.marcas.filter(marca =>
       marca.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
   filterModelos() {
-    this.filteredModelos = this.modelos.filter(modelo => 
+    this.filteredModelos = this.modelos.filter(modelo =>
       modelo.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
@@ -208,7 +210,7 @@ export class UserRegistrationComponent implements OnInit {
 
     // Generar un ID de usuario provisional (esto debería hacerse en el backend)
     const provisionalUserId = 'user_' + Math.random().toString(36).substr(2, 9);
-    
+
     // Almacenar los datos del usuario en el localStorage (temporal, debería manejarse con un servicio de autenticación)
     localStorage.setItem('currentUser', JSON.stringify({
       id: provisionalUserId,
@@ -236,22 +238,19 @@ export class UserRegistrationComponent implements OnInit {
 
   onSubmit() {
     if (this.personalInfoForm.valid) {
-      const navigationExtras: NavigationExtras = {
-        state: {
-          userInfo: this.personalInfoForm.value,
-          vehicleInfo: {
-            ...this.selectedVehicle, // Esto debería incluir icon, name, description, type
-            marca: this.marcaSeleccionada,
-            modelo: this.modeloSeleccionado,
-            placa: this.placa
-          },
+      const userData = {
+        userInfo: this.personalInfoForm.value,
+        vehicleInfo: {
+          ...this.selectedVehicle,
+          marca: this.marcaSeleccionada,
+          modelo: this.modeloSeleccionado,
+          placa: this.placa
         },
-        replaceUrl: true
+        origen: this.origen,
+        destino: this.destino
       };
   
-      this.modalController.dismiss().then(() => {
-        this.router.navigate(['/service-detail'], navigationExtras);
-      });
+      this.modalController.dismiss(userData);
     }
   }
 }

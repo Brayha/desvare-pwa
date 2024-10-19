@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MercadoLibre2Service } from '../../services/mercado-libre2.service';
 import { CommonModule } from '@angular/common';
 import { IonicModule, ModalController, ToastController } from '@ionic/angular';
@@ -8,7 +8,7 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { UserRegistrationComponent } from '../user-registration/user-registration.component';
 import { ErrorHandlerService } from '../../services/error-handler.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-auth-modal',
   standalone: true,
@@ -26,6 +26,8 @@ import { ErrorHandlerService } from '../../services/error-handler.service';
   ]
 })
 export class AuthModalComponent implements OnInit {
+  @Input() origen: any;
+  @Input() destino: any;
   categoriasVehiculos: any[] = [];
   // Propiedades de autenticación
   showOtp: boolean = false;
@@ -51,13 +53,14 @@ export class AuthModalComponent implements OnInit {
     { icon: '/assets/icon-vehicle-type/Autobus.svg', name: 'Bus', description: 'Transporte público', type: 'bus' }
   ];
 
-  
+
   constructor(
     private mercadoLibre2Service: MercadoLibre2Service,
     private modalController: ModalController,
     private authService: AuthService,
     private toastController: ToastController,
-    private errorHandler: ErrorHandlerService
+    private errorHandler: ErrorHandlerService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -135,19 +138,18 @@ export class AuthModalComponent implements OnInit {
           icon: this.getIconForCategory(categoria.name),
           description: this.getDescriptionForCategory(categoria.name)
         },
-        isAddingNewVehicle: this.logeado
+        isAddingNewVehicle: this.logeado,
+        origen: this.origen,
+        destino: this.destino
       }
     });
   
     modal.onDidDismiss().then((result) => {
       if (result.data) {
-        // Si se agregó un nuevo vehículo, lo añadimos a la lista de vehículos guardados
-        const newVehicle = result.data;
-        this.savedVehicles.push({
-          brand: newVehicle.marca,
-          model: newVehicle.modelo,
-          plate: newVehicle.placa,
-          icon: newVehicle.icon || this.getIconForCategory(newVehicle.name)
+        this.modalController.dismiss({
+          userRegistered: true,
+          userInfo: result.data.userInfo,
+          vehicleInfo: result.data.vehicleInfo
         });
       }
     });
@@ -203,7 +205,7 @@ export class AuthModalComponent implements OnInit {
       this.otpError = 'El código debe tener 6 dígitos.';
       return;
     }
-  
+
     this.isLoading = true;
     try {
       const isValid = await this.authService.verifyOtp(this.phoneNumber, this.otpCode);

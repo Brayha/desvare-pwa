@@ -35,11 +35,28 @@ export class Tab2Page {
   async iniciarProceso() {
     const modal = await this.modalController.create({
       component: AuthModalComponent,
+      componentProps: {
+        origen: this.currentAddress,
+        destino: this.destinoSeleccionado
+      },
       breakpoints: [0, 0.5, 0.8, 1],
       initialBreakpoint: 0.5,
       mode: 'ios'
     });
+    
     await modal.present();
+  
+    const { data } = await modal.onDidDismiss();
+    if (data && data.userRegistered) {
+      this.router.navigate(['/service-detail'], {
+        state: {
+          userInfo: data.userInfo,
+          vehicleInfo: data.vehicleInfo,
+          origen: { address: this.currentAddress },
+          destino: this.destinoSeleccionado
+        }
+      });
+    }
   }
 
   onAddressChanged(address: string) {
