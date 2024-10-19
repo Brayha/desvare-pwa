@@ -245,12 +245,10 @@ export class UserRegistrationComponent implements OnInit {
           marca: this.marcaSeleccionada,
           modelo: this.modeloSeleccionado,
           placa: this.placa
-        },
-        origen: this.origen,
-        destino: this.destino
+        }
       };
-  
-      this.modalController.dismiss(userData);
+    
+      this.modalController.dismiss(userData, 'registered');
     }
   }
 }

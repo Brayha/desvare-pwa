@@ -19,6 +19,11 @@ export class AuthService {
     this.isLoggedIn = false;
     localStorage.removeItem('user_token');
   }
+
+  setLoggedInStatus(status: boolean) {
+    this.isLoggedIn = status;
+    // Puedes emitir un evento aquí si otros componentes necesitan saber sobre el cambio de estado
+  }
   
 
   async checkPhoneExists(phoneNumber: string): Promise<boolean> {

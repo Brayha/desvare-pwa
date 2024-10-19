@@ -72,6 +72,11 @@ export class AuthModalComponent implements OnInit {
     }
   }
 
+  async loadUserData() {
+    await this.loadSavedVehicles();
+    await this.loadUserName();
+  }
+
   loadCategorias() {
     this.mercadoLibre2Service.getCategorias().subscribe(
       (categorias) => {
@@ -145,18 +150,30 @@ export class AuthModalComponent implements OnInit {
     });
   
     modal.onDidDismiss().then((result) => {
-      if (result.data) {
-        this.modalController.dismiss({
-          userRegistered: true,
-          userInfo: result.data.userInfo,
-          vehicleInfo: result.data.vehicleInfo
-        });
+      if (result.role === 'registered') {
+        this.handleRegisteredUser(result.data);
+      } else if (result.role === 'dismiss') {
+        // El usuario canceló el registro, no hacemos nada
       }
     });
   
     return await modal.present();
   }
 
+  handleRegisteredUser(userData: any) {
+    this.logeado = true;
+    this.nombreUsuario = userData.userInfo.username;
+    this.savedVehicles = [userData.vehicleInfo];
+    
+    // Actualizar el estado de autenticación en el servicio
+    this.authService.setLoggedInStatus(true);
+    
+    // Guardar los datos del usuario (esto podría hacerse en el AuthService)
+    localStorage.setItem('currentUser', JSON.stringify(userData.userInfo));
+    
+    this.presentWelcomeToast();
+  }
+  
   // Métodos de carga de datos de usuario
   async loadSavedVehicles() {
     try {
