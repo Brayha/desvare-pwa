@@ -163,13 +163,23 @@ export class AuthModalComponent implements OnInit {
   handleRegisteredUser(userData: any) {
     this.logeado = true;
     this.nombreUsuario = userData.userInfo.username;
-    this.savedVehicles = [userData.vehicleInfo];
+    
+    // Formatear los datos del vehículo para que coincidan con la estructura esperada
+    this.savedVehicles = [{
+      icon: userData.vehicleInfo.icon || this.getIconForCategory(userData.vehicleInfo.name),
+      brand: userData.vehicleInfo.marca,
+      model: userData.vehicleInfo.modelo,
+      plate: userData.vehicleInfo.placa
+    }];
     
     // Actualizar el estado de autenticación en el servicio
     this.authService.setLoggedInStatus(true);
     
     // Guardar los datos del usuario (esto podría hacerse en el AuthService)
-    localStorage.setItem('currentUser', JSON.stringify(userData.userInfo));
+    localStorage.setItem('currentUser', JSON.stringify({
+      ...userData.userInfo,
+      vehicles: this.savedVehicles
+    }));
     
     this.presentWelcomeToast();
   }
@@ -177,12 +187,13 @@ export class AuthModalComponent implements OnInit {
   // Métodos de carga de datos de usuario
   async loadSavedVehicles() {
     try {
-      // TODO: Implementar llamada al servicio para obtener vehículos guardados
-      /* this.savedVehicles = await this.authService.getSavedVehicles(); */
-      // Por ahora, inicializamos con un vehículo de ejemplo
-      this.savedVehicles = [
-        { brand: 'Ford', model: 'Explorer', plate: 'ZIV-026', icon: 'assets/brand.png' }
-      ];
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      if (currentUser.vehicles) {
+        this.savedVehicles = currentUser.vehicles;
+      } else {
+        // Si no hay vehículos guardados, inicializamos con un array vacío
+        this.savedVehicles = [];
+      }
     } catch (error) {
       console.error('Error al cargar los vehículos guardados:', error);
       this.errorHandler.handleError(error, 'Error al cargar los vehículos guardados. Por favor, intente de nuevo.');
