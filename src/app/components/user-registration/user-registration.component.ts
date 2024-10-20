@@ -106,6 +106,11 @@ export class UserRegistrationComponent implements OnInit {
           placa: this.placa
         }
       };
+
+      await this.modalController.dismiss({
+        userData: userData,
+        openConfirmService: true
+      }, 'registered');
   
       const modal = await this.modalController.create({
         component: ConfirmServiceModalComponent,
@@ -114,7 +119,13 @@ export class UserRegistrationComponent implements OnInit {
           vehicleData: userData.vehicleInfo,
           origen: this.origen,
           destino: this.destino
-        }
+        },
+        cssClass: 'confirm-service-modal',
+        backdropDismiss: false,
+        breakpoints: [0.4, 0.4, 0.92],
+        initialBreakpoint: 0.4,
+        backdropBreakpoint: 0.5,
+        mode: 'ios'
       });
   
       await modal.present();
