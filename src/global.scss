@@ -115,9 +115,8 @@ ion-item {
     padding-right: 0 !important;
   }
 }
-
-/* Input Styles */
-.input-desvare {
+/* Estilos compartidos para input y select */
+.input-desvare, .select-desvare {
   padding: 10px 0;
   display: block;
   --background: #fff;
@@ -151,7 +150,10 @@ ion-item {
     color: #9CA3AF;
     font-weight: 800 !important;
   }
+}
 
+/* Estilos específicos para ion-input */
+.input-desvare {
   ion-input {
     font-family: 'Gilroy', sans-serif;
     color: #000;
@@ -165,6 +167,32 @@ ion-item {
   .destino-input.ion-focused {
     --color: #223D62;
     --placeholder-color: rgba(34, 61, 98, 0.5);
+  }
+}
+
+/* Estilos específicos para ion-select */
+.select-desvare {
+  ion-select {
+    font-family: 'Gilroy', sans-serif;
+    color: #000;
+    font-weight: 400;
+    --placeholder-color: #9CA3AF;
+    --placeholder-opacity: 1;
+  }
+
+  &.select-expanded {
+    box-shadow: 0 0 0 3px rgba(34, 61, 98, 0.5);
+    border-color: #223D62;
+  }
+
+  .select-icon {
+    opacity: 1;
+    width: 12px;
+    height: 18px;
+  }
+
+  .select-text {
+    opacity: 1;
   }
 }
 

@@ -2,7 +2,8 @@
 
 <ion-content class="ion-padding">
   <ion-item class="my-vehicle-card">
-    <img slot="start" [src]="vehicleData?.icon || '../../assets/icon-vehicle-type/Automovil.svg'" [alt]="vehicleData?.name || 'vehículo'">
+    <img slot="start" [src]="vehicleData?.icon || '../../assets/icon-vehicle-type/Automovil.svg'"
+      [alt]="vehicleData?.name || 'vehículo'">
     <ion-label>
       <ion-text>
         <h3>{{ vehicleData.marca }}</h3>
@@ -32,18 +33,58 @@
       </ion-item>
     </ion-list>
   </div>
-  
-  <!-- <ion-card>
-    <ion-card-header>
-      <ion-card-title>Información del Usuario</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <p><strong>Nombre:</strong> {{ userData.username }}</p>
-      <p><strong>Email:</strong> {{ userData.email }}</p>
-      <p><strong>Teléfono:</strong> {{ userData.phone }}</p>
-    </ion-card-content>
-  </ion-card>
-  <ion-button expand="block" (click)="confirmar()">Confirmar Servicio</ion-button> -->
 
-  <ion-button expand="block" fill="outline" (click)="cancelar()">Cancelar</ion-button>
+  <div class="container-question">
+    <h3>¿Qué problema tiene el vehículo?</h3>
+    
+    <!-- Lista inicial de problemas -->
+    <div class="list-question" *ngIf="!selectedProblem">
+      <ion-list mode="ios">
+        <ion-item mode="ios" button="true" *ngFor="let problem of problemList" (click)="selectProblem(problem)">
+          <ion-label>
+            <h2>{{ problem.title }}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  
+    <!-- Formulario específico para el problema seleccionado -->
+    <div *ngIf="selectedProblem" class="detail-problem">
+      <ion-item mode="ios" lines="none" (click)="goBack()" class="ion-no-margin ion-no-padding">
+        <img slot="start" src="../../assets/iconsax-svg/All/linear/arrow-left.svg" alt="back">
+        <ion-label>
+          <h2>{{ selectedProblem.title }}</h2>
+        </ion-label>
+      </ion-item>
+      
+      <form (ngSubmit)="confirmarServicio()" class="form-question">
+        <!-- Preguntas específicas para el problema seleccionado -->
+        <div *ngFor="let question of selectedProblem.questions">
+
+          <ion-item lines="none" mode="ios" class="input-desvare" *ngIf="question.type === 'text'">
+            <img slot="start" [src]="question.icon" [alt]="question.label">
+            <ion-input type="text" [label]="question.label" required label-placement="floating"
+              [placeholder]="question.placeholder" mode="ios"></ion-input>
+          </ion-item>
+          
+          <ion-item *ngIf="question.type === 'select'" mode="ios" lines="none" class="select-desvare">
+            <img slot="start" src="assets/iconsax-svg/All/bulk/warning-2.svg" alt="select">
+            <ion-select [placeholder]="question.placeholder" mode="ios" label-placement="floating" [label]="question.label">
+              <ion-select-option *ngFor="let option of question.options" mode="ios" [value]="option">{{ option }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          
+          <ion-item *ngIf="question.type === 'toggle'" mode="ios" lines="none">
+            <ion-label>{{ question.label }}</ion-label>
+            <ion-toggle slot="end" mode="ios"></ion-toggle>
+          </ion-item>
+        </div>
+        
+        <ion-button expand="block" type="submit">Buscar gruas</ion-button>
+      </form>
+    </div>
+  </div>
+
+
+  <ion-button expand="block" fill="outline" color="white" (click)="cancelar()">Cancelar</ion-button>
 </ion-content>

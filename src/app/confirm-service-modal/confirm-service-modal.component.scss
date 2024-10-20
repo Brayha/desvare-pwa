@@ -1,0 +1,44 @@
+.container-question {
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    background-color: #E5E7EB;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+    margin-top: 16px;
+
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #4B5563;
+        margin: 0;
+        padding: 16px;
+    }
+
+    .detail-problem {
+        padding: 16px;
+        border-radius: 16px;
+        contain: content;
+        background-color: #fff;
+    }
+
+    .list-question {
+        background-color: #fff;
+        contain: content;
+        border-radius: 16px;
+
+        h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #4B5563;
+            margin: 0 10px;
+        }
+    }
+
+    .form-question {
+        margin-top: 16px;
+        contain: content;
+        background-color: #fff;
+        gap: 16px;
+        display: grid;
+    }
+}
