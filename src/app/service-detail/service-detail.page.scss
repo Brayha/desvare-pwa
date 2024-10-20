@@ -29,55 +29,6 @@ app-mapa {
 
 
 
-.destination-card-ruter {
-    background-color: transparent !important;
-
-    .ion-item {
-        padding: 0;
-    }
-
-    img {
-        display: flex;
-        width: var(--Padding-24, 24px);
-        height: var(--Padding-24, 24px);
-        justify-content: center;
-        align-items: center;
-        filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(5000%) hue-rotate(214deg) brightness(102%) contrast(107%);
-    }
-
-    .icon-destino {
-        filter: brightness(0) saturate(100%) invert(48%) sepia(95%) saturate(5824%) hue-rotate(359deg) brightness(102%) contrast(103%);
-    }
-
-    h2 {
-        font-size: 24px;
-        font-weight: 700;
-        color: #223D62;
-    }
-
-    h3 {
-        font-size: 16px;
-        font-weight: 400;
-    }
-
-    p {
-        font-size: 14px;
-        font-weight: 800;
-    }
-
-    .edit-button {
-        --padding-start: 16px;
-        --padding-end: 16px;
-        --padding-top: 12px;
-        --padding-bottom: 12px;
-        background-color: white;
-        --background: white;
-        color: #9CA3AF;
-    }
-}
-
-
-
 .container-radio {
     padding: 16px 0;
 

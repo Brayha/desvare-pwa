@@ -163,6 +163,9 @@ export class AuthModalComponent implements OnInit {
         destino: this.destino
       }
     });
+
+
+  await this.modalController.dismiss(null, 'closeForRegistration');
   
     modal.onDidDismiss().then((result) => {
       if (result.role === 'registered') {
