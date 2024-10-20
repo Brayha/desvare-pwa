@@ -112,22 +112,26 @@ export class Tab2Page {
         destinoActual: this.destinoSeleccionado?.address
       }
     });
-
+  
     console.log('Abriendo modal con origen:', this.currentAddress);
-
+  
     await modal.present();
-
+  
     const { data } = await modal.onWillDismiss();
     if (data) {
       let actualizarRuta = false;
-
-      if (data.origenLat && data.origenLng) {
-        this.currentAddress = data.origen;
-        // Actualizar la posición del usuario en el mapa
-        this.mapaComponent.actualizarPosicionUsuario({ lat: data.origenLat, lng: data.origenLng });
+  
+      if (data.origen) {
+        this.currentAddress = { address: data.origen };
+        console.log('Origen actualizado:', this.currentAddress);
+        if (data.origenLat && data.origenLng) {
+          // Actualizar la posición del usuario en el mapa
+          this.mapaComponent.actualizarPosicionUsuario({ lat: data.origenLat, lng: data.origenLng });
+        }
         actualizarRuta = true;
       }
-      if (data.destinoLat && data.destinoLng) {
+  
+      if (data.destino) {
         this.destinoSeleccionado = {
           address: data.destino,
           lat: data.destinoLat,
@@ -136,7 +140,7 @@ export class Tab2Page {
         this.mostrarBusqueda = false;
         actualizarRuta = true;
       }
-
+  
       if (actualizarRuta && this.destinoSeleccionado) {
         this.trazarRuta();
       }
