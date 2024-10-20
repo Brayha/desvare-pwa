@@ -11,11 +11,7 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'prueba-mercado',
-    loadComponent: () => import('./prueba-mercado/prueba-mercado.page').then( m => m.PruebaMercadoPage)
-  },
-  {
-    path: 'service-detail',
-    loadComponent: () => import('./service-detail/service-detail.page').then(m => m.ServiceDetailPage)
-  },
+    path: 'search-drivers',
+    loadComponent: () => import('./search-drivers/search-drivers.page').then( m => m.SearchDriversPage)
+  }
 ];
