@@ -4,7 +4,7 @@
       <img src="../../assets/Logo.svg" alt="Desvare">
     </div>
     <app-mapa (addressChanged)="onAddressChanged($event)" [destinoSeleccionado]="destinoSeleccionado"></app-mapa>
-    <div class="destination-card">
+    <div class="destination-card" *ngIf="!confirmarRuta && !modalAbierto">
       <ng-container *ngIf="mostrarBusqueda; else rutaConfirmada">
         <div class="input-search-container">
           <div class="input-search" (click)="abrirModalDestino()">

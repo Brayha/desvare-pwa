@@ -25,6 +25,8 @@ export class Tab2Page {
   } | null = null;
   direccionOrigen: string = '';
   mostrarBusqueda: boolean = true;
+  confirmarRuta: boolean = false;
+  modalAbierto: boolean = false;
 
   constructor(private modalCtrl: ModalController, private modalController: ModalController, private router: Router) { }
 
@@ -43,10 +45,12 @@ export class Tab2Page {
       initialBreakpoint: 0.5,
       mode: 'ios'
     });
+
     
     await modal.present();
   
     const { data } = await modal.onDidDismiss();
+    this.modalAbierto = true;
     if (data && data.openConfirmService) {
       this.openConfirmServiceModal(data.userData);
     }
