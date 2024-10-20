@@ -1,13 +1,45 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Confirmar Servicio</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cancelar()">Cerrar</ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
-  <h2>¿Estás seguro de que deseas confirmar este servicio?</h2>
-  <ion-button expand="block" (click)="confirmar()">Confirmar</ion-button>
-  <ion-button expand="block" fill="clear" (click)="cancelar()">Cancelar</ion-button>
+  <h2>Detalles del Servicio</h2>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Información del Usuario</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Nombre:</strong> {{ userData.username }}</p>
+      <p><strong>Email:</strong> {{ userData.email }}</p>
+      <p><strong>Teléfono:</strong> {{ userData.phone }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Información del Vehículo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Tipo:</strong> {{ vehicleData.name }}</p>
+      <p><strong>Marca:</strong> {{ vehicleData.marca }}</p>
+      <p><strong>Modelo:</strong> {{ vehicleData.modelo }}</p>
+      <p><strong>Placa:</strong> {{ vehicleData.placa }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Detalles del Viaje</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Origen:</strong> {{ origen?.address || 'No especificado' }}</p>
+      <p><strong>Destino:</strong> {{ destino.address }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" (click)="confirmar()">Confirmar Servicio</ion-button>
+  <ion-button expand="block" fill="outline" (click)="cancelar()">Cancelar</ion-button>
 </ion-content>

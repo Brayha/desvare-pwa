@@ -9,6 +9,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { UserRegistrationComponent } from '../user-registration/user-registration.component';
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-auth-modal',
   standalone: true,
@@ -25,6 +26,7 @@ import { Router } from '@angular/router';
     ])
   ]
 })
+
 export class AuthModalComponent implements OnInit {
   @Input() origen: any;
   @Input() destino: any;
@@ -67,14 +69,27 @@ export class AuthModalComponent implements OnInit {
     this.loadCategorias();
     this.logeado = this.authService.checkLoginStatus();
     if (this.logeado) {
-      this.loadSavedVehicles();
-      this.loadUserName();
+      this.loadUserData();
     }
   }
 
   async loadUserData() {
     await this.loadSavedVehicles();
     await this.loadUserName();
+  }
+
+  async loadSavedVehicles() {
+    // Implementa la lógica para cargar los vehículos guardados
+    // Por ejemplo:
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.savedVehicles = currentUser.vehicles || [];
+  }
+
+  async loadUserName() {
+    // Implementa la lógica para cargar el nombre de usuario
+    // Por ejemplo:
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.nombreUsuario = currentUser.username || '';
   }
 
   loadCategorias() {
@@ -164,7 +179,6 @@ export class AuthModalComponent implements OnInit {
     this.logeado = true;
     this.nombreUsuario = userData.userInfo.username;
     
-    // Formatear los datos del vehículo para que coincidan con la estructura esperada
     this.savedVehicles = [{
       icon: userData.vehicleInfo.icon || this.getIconForCategory(userData.vehicleInfo.name),
       brand: userData.vehicleInfo.marca,
@@ -172,10 +186,8 @@ export class AuthModalComponent implements OnInit {
       plate: userData.vehicleInfo.placa
     }];
     
-    // Actualizar el estado de autenticación en el servicio
     this.authService.setLoggedInStatus(true);
     
-    // Guardar los datos del usuario (esto podría hacerse en el AuthService)
     localStorage.setItem('currentUser', JSON.stringify({
       ...userData.userInfo,
       vehicles: this.savedVehicles
@@ -183,41 +195,16 @@ export class AuthModalComponent implements OnInit {
     
     await this.presentWelcomeToast();
     
-    // Cerrar el modal después de un breve retraso para que el usuario pueda ver el mensaje de bienvenida
     setTimeout(() => {
       this.modalController.dismiss({
         logged: true,
         user: userData.userInfo,
         vehicle: this.savedVehicles[0],
-        openConfirmService: true
+        openConfirmService: true,
+        origen: this.origen,
+        destino: this.destino
       });
     }, 0);
-  }
-  
-  // Métodos de carga de datos de usuario
-  async loadSavedVehicles() {
-    try {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-      if (currentUser.vehicles) {
-        this.savedVehicles = currentUser.vehicles;
-      } else {
-        // Si no hay vehículos guardados, inicializamos con un array vacío
-        this.savedVehicles = [];
-      }
-    } catch (error) {
-      console.error('Error al cargar los vehículos guardados:', error);
-      this.errorHandler.handleError(error, 'Error al cargar los vehículos guardados. Por favor, intente de nuevo.');
-    }
-  }
-
-  async loadUserName() {
-    try {
-      // TODO: Implementar llamada al servicio para obtener el nombre del usuario
-      /* this.nombreUsuario = await this.authService.getUserName(); */
-      this.nombreUsuario = 'Jhon Snow';
-    } catch (error) {
-      console.error('Error al cargar el nombre del usuario:', error);
-    }
   }
 
   // Métodos de interacción con vehículos

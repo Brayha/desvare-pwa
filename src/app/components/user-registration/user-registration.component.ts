@@ -6,6 +6,7 @@ import { MercadoLibre2Service } from '../../services/mercado-libre2.service';
 import { ErrorHandlerService } from '../../services/error-handler.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Router, NavigationExtras } from '@angular/router';
+import { ConfirmServiceModalComponent } from '../../confirm-service-modal/confirm-service-modal.component';
 
 interface Vehicle {
   icon: string;
@@ -92,6 +93,38 @@ export class UserRegistrationComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  async openConfirmServiceModal() {
+    if (this.personalInfoForm.valid) {
+      const userData = {
+        userInfo: this.personalInfoForm.value,
+        vehicleInfo: {
+          ...this.selectedVehicle,
+          marca: this.marcaSeleccionada,
+          modelo: this.modeloSeleccionado,
+          placa: this.placa
+        }
+      };
+  
+      const modal = await this.modalController.create({
+        component: ConfirmServiceModalComponent,
+        componentProps: {
+          userData: userData.userInfo,
+          vehicleData: userData.vehicleInfo,
+          origen: this.origen,
+          destino: this.destino
+        }
+      });
+  
+      await modal.present();
+  
+      const { data } = await modal.onDidDismiss();
+      if (data && data.confirmed) {
+        console.log('Servicio confirmado');
+        this.modalController.dismiss(userData, 'registered');
+      }
+    }
   }
 
   cargarModelos() {
@@ -237,18 +270,8 @@ export class UserRegistrationComponent implements OnInit {
   };
 
   onSubmit() {
-    if (this.personalInfoForm.valid) {
-      const userData = {
-        userInfo: this.personalInfoForm.value,
-        vehicleInfo: {
-          ...this.selectedVehicle,
-          marca: this.marcaSeleccionada,
-          modelo: this.modeloSeleccionado,
-          placa: this.placa
-        }
-      };
-    
-      this.modalController.dismiss(userData, 'registered');
-    }
+  if (this.personalInfoForm.valid) {
+    this.openConfirmServiceModal();
   }
+}
 }

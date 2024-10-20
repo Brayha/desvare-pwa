@@ -17,7 +17,7 @@ import { ConfirmServiceModalComponent } from '../confirm-service-modal/confirm-s
 export class Tab2Page {
   @ViewChild(MapaComponent) mapaComponent!: MapaComponent;
 
-  currentAddress: string = '';
+  currentAddress: { address: string } = { address: '' };
   destinoSeleccionado: {
     address: string;
     lat: number;
@@ -100,14 +100,15 @@ export class Tab2Page {
   }
 
   onAddressChanged(address: string) {
-    this.currentAddress = address;
+    this.currentAddress = { address: address };
+    console.log('Dirección de origen actualizada:', this.currentAddress);
   }
 
   async abrirModalDestino() {
     const modal = await this.modalCtrl.create({
       component: ModalAddressComponent,
       componentProps: {
-        origen: this.currentAddress,
+        origen: this.currentAddress.address,
         destinoActual: this.destinoSeleccionado?.address
       }
     });
