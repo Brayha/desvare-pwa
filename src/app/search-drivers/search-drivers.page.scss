@@ -1,0 +1,29 @@
+.progress-bar {
+    padding: 16px 0;
+
+    h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #111827;
+        text-align: center;
+    }
+}
+
+.search-drivers-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .search-drivers-mapa {
+        width: 100%;
+        flex-grow: 1;
+        display: block;
+    }
+
+    .search-drivers-content {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+}

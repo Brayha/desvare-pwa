@@ -11,7 +11,7 @@ import { decode } from '@googlemaps/polyline-codec';
   templateUrl: './mapa.component.html',
   styleUrls: ['./mapa.component.scss']
 })
-export class MapaComponent implements OnInit {
+export class MapaComponent implements OnInit, OnChanges {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
   @Output() addressChanged = new EventEmitter<string>();
   @Input() destinoSeleccionado: any;
@@ -61,6 +61,8 @@ export class MapaComponent implements OnInit {
 
   private animatedPolyline: google.maps.Polyline | null = null;
 
+  constructor() { }
+
   ngOnInit() {
     this.loadGoogleMaps().then(() => {
       this.initMap();
@@ -83,7 +85,7 @@ export class MapaComponent implements OnInit {
     const mapOptions: google.maps.MapOptions = {
       center: defaultLocation,
       zoom: 16,
-      disableDefaultUI: true, // Desactiva los controles por defecto
+      disableDefaultUI: true,
       styles: this.mapStyle
     };
 
@@ -274,5 +276,24 @@ export class MapaComponent implements OnInit {
     const bounds = new google.maps.LatLngBounds();
     result.routes[0].overview_path.forEach((point) => bounds.extend(point));
     this.map.fitBounds(bounds);
+  }
+  
+  agregarMarcador(lat: number, lng: number, titulo: string): void {
+    const position = new google.maps.LatLng(lat, lng);
+    const marker = new google.maps.Marker({
+      position: position,
+      map: this.map,
+      title: titulo
+    });
+    
+    marker.addListener('click', () => {
+      const infoWindow = new google.maps.InfoWindow({
+        content: titulo
+      });
+      infoWindow.open(this.map, marker);
+    });
+    
+    this.map.setCenter(position);
+    this.map.setZoom(15);
   }
 }

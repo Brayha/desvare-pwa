@@ -249,7 +249,45 @@ ion-item {
   font-family: 'Gilroy', sans-serif;
 }
 
-// Vehicle Card
+
+
+.header-mapa {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    display: block;
+    height: 32px;
+  }
+}
+
+.vehicle-card-problem {
+  background-color: #E5E7EB;
+  border-radius: 16px;
+  border: 1px solid #E5E5E5;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+
+  p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4B5563;
+    padding-left: 16px;
+
+    span {
+      font-weight: 600;
+      color: #111827;
+    }
+  }
+}
+
+  // Vehicle Card
 .my-vehicle-card {
   border: 1px solid #E5E5E5;
   border-radius: 16px;

@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonFabButton, IonList, IonItem, IonLabel, IonProgressBar, IonButton, IonFab, IonIcon } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
+import { MapaComponent } from '../mapa/mapa.component';
 
 @Component({
   selector: 'app-search-drivers',
   templateUrl: './search-drivers.page.html',
   styleUrls: ['./search-drivers.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonList, IonItem, IonLabel]
+  imports: [IonIcon, IonFab, IonFabButton, IonButton, IonProgressBar, IonContent, MapaComponent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonList, IonItem, IonLabel]
 })
-export class SearchDriversPage implements OnInit {
+export class SearchDriversPage implements OnInit, AfterViewInit {
+  @ViewChild(MapaComponent) mapaComponent!: MapaComponent;
   userData: any;
   vehicleData: any;
   origen: any;
@@ -31,5 +33,15 @@ export class SearchDriversPage implements OnInit {
 
   ngOnInit() {
     console.log('Datos recibidos:', this.userData, this.vehicleData, this.origen, this.destino, this.problemData);
+  }
+
+  ngAfterViewInit() {
+    if (this.origen && this.origen.lat && this.origen.lng) {
+      this.mapaComponent.agregarMarcador(this.origen.lat, this.origen.lng, 'Origen');
+    }
+  }
+
+  cancelar() {
+    this.router.navigate(['/tab2']);
   }
 }

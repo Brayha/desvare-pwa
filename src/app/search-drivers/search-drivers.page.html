@@ -1,44 +1,50 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Búsqueda de conductores</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-list>
-    <ion-item *ngIf="userData">
-      <ion-label>
-        <h2>Información del usuario</h2>
-        <p>{{ userData | json }}</p>
-      </ion-label>
-    </ion-item>
-    
-    <ion-item *ngIf="vehicleData">
-      <ion-label>
-        <h2>Información del vehículo</h2>
-        <p>{{ vehicleData | json }}</p>
-      </ion-label>
-    </ion-item>
-    
-    <ion-item *ngIf="origen">
-      <ion-label>
-        <h2>Origen</h2>
-        <p>{{ origen | json }}</p>
-      </ion-label>
-    </ion-item>
-    
-    <ion-item *ngIf="destino">
-      <ion-label>
-        <h2>Destino</h2>
-        <p>{{ destino | json }}</p>
-      </ion-label>
-    </ion-item>
-    
-    <ion-item *ngIf="problemData">
-      <ion-label>
-        <h2>Problema seleccionado</h2>
-        <p>{{ problemData | json }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div class="header-mapa">
+    <img src="../../assets/Logo.svg" alt="Desvare">
+  </div>
+
+  <ion-fab slot="fixed" vertical="top" horizontal="end">
+    <ion-fab-button (click)="cancelar()" color="light">
+      <img src="../../assets/iconsax-svg/All/bulk/close-circle.svg" alt="close">
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="search-drivers-container">
+    <app-mapa class="search-drivers-mapa"></app-mapa>
+    <div class="ion-padding search-drivers-content">
+      <ion-list mode="ios">
+        <div class="vehicle-card-problem">
+          <ion-item class="my-vehicle-card">
+            <img slot="start" [src]="vehicleData?.icon || '../../assets/icon-vehicle-type/Automovil.svg'"
+              [alt]="vehicleData?.name || 'vehículo'">
+            <ion-label>
+              <h3>{{ vehicleData.marca }}</h3>
+              <p>{{ vehicleData.modelo }}</p>
+            </ion-label>
+            <div slot="end" class="placa">
+              <h5>{{ vehicleData.placa }}</h5>
+            </div>
+          </ion-item>
+          <p>Problema del vehículo: <span>{{ problemData?.tipo }}</span></p>
+        </div>
+
+        <div class="destination-card-ruter ion-margin-vertical">
+          <ion-list>
+            <ion-item class="ion-no-margin ion-no-padding">
+              <img slot="start" src="assets/iconsax-svg/All/bold/location.svg" alt="location">
+              <ion-label>
+                <p>Origen:</p>
+                <h3>{{ origen?.address }}</h3>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div class="progress-bar">
+          <h3>Buscando conductores...</h3>
+          <ion-progress-bar type="indeterminate"></ion-progress-bar>
+        </div>
+      </ion-list>
+    </div>
+  </div>
 </ion-content>
