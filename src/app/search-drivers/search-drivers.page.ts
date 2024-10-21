@@ -24,6 +24,28 @@ export class SearchDriversPage implements OnInit, AfterViewInit {
   destino: any;
   problemData: any;
 
+  swiperConfig = {
+    pagination: false,
+    spaceBetween: 10,
+    breakpoints: {
+      // cuando el ancho de la ventana es >= 320px
+      320: {
+        slidesPerView: 1.5,
+        spaceBetween: 10
+      },
+      // cuando el ancho de la ventana es >= 480px
+      480: {
+        slidesPerView: 2,
+        spaceBetween: 20
+      },
+      // cuando el ancho de la ventana es >= 640px
+      640: {
+        slidesPerView: 3,
+        spaceBetween: 30
+      }
+    }
+  };
+
   constructor(private router: Router) {
     // Registra Swiper para usar elementos personalizados
     register();

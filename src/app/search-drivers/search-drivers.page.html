@@ -11,29 +11,31 @@
 
   <div class="search-drivers-container">
     <app-mapa class="search-drivers-mapa"></app-mapa>
+
+    <!-- Nuevo componente de slides -->
+    <swiper-container [config]="swiperConfig" class="drivers-slider">
+      <swiper-slide class="driver-card">
+        <ion-item>
+          <img slot="start" src="../../assets/avatars/user1.png" alt="avatar">
+          <ion-label>
+            <h3>Juan Pérez</h3>
+            <p>$80.000</p>
+          </ion-label>
+        </ion-item>
+      </swiper-slide>
+
+      <swiper-slide class="driver-card">
+        <ion-item>
+          <img slot="start" src="../../assets/avatars/user2.png" alt="avatar">
+          <ion-label>
+            <h3>Brayan</h3>
+            <p>$90.000</p>
+          </ion-label>
+        </ion-item>
+      </swiper-slide>
+    </swiper-container>
+
     <div class="ion-padding search-drivers-content">
-      <!-- Nuevo componente de slides -->
-      <swiper-container [slidesPerView]="1" [pagination]="true">
-        <swiper-slide>
-          <div class="slide-content">
-            <h2>Slide 1</h2>
-            <p>Contenido del slide 1</p>
-          </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="slide-content">
-            <h2>Slide 2</h2>
-            <p>Contenido del slide 2</p>
-          </div>
-        </swiper-slide>
-        <swiper-slide>
-          <div class="slide-content">
-            <h2>Slide 3</h2>
-            <p>Contenido del slide 3</p>
-          </div>
-        </swiper-slide>
-      </swiper-container>
-      
       <ion-list mode="ios">
         <div class="vehicle-card-problem">
           <ion-item class="my-vehicle-card">

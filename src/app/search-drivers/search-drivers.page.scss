@@ -27,3 +27,17 @@
         display: block;
     }
 }
+
+.drivers-slider {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+
+    .driver-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+}
