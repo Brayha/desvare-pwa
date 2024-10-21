@@ -96,8 +96,8 @@ export class ConfirmServiceModalComponent {
   }
 
   confirmarServicio() {
-    // Lógica para confirmar el servicio
     console.log('Servicio confirmado', this.selectedProblem);
+    this.modalCtrl.dismiss({ confirmed: true, problemData: this.selectedProblem });
   }
 
   cancelar() {
