@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router'; // Importar Router
 
 @Component({
   selector: 'app-confirm-service-modal',
@@ -85,7 +86,10 @@ export class ConfirmServiceModalComponent {
     // ... Definir otros problemas con sus preguntas específicas
   ];
 
-  constructor(private modalCtrl: ModalController) {}
+  constructor(
+    private modalCtrl: ModalController,
+    private router: Router
+  ) { }
 
   selectProblem(problem: any) {
     this.selectedProblem = problem;
@@ -95,9 +99,18 @@ export class ConfirmServiceModalComponent {
     this.selectedProblem = null;
   }
 
-  confirmarServicio() {
+  async confirmarServicio() {
     console.log('Servicio confirmado', this.selectedProblem);
-    this.modalCtrl.dismiss({ confirmed: true, problemData: this.selectedProblem });
+    await this.modalCtrl.dismiss({ confirmed: true, problemData: this.selectedProblem });
+    this.router.navigate(['/search-drivers'], {
+      state: {
+        userData: this.userData,
+        vehicleData: this.vehicleData,
+        origen: this.origen,
+        destino: this.destino,
+        problemData: this.selectedProblem
+      }
+    });
   }
 
   cancelar() {
