@@ -306,6 +306,22 @@ ion-item {
       font-weight: 400;
       color: #4B5563;
   }
+
+  swiper-container {
+    width: 100%;
+    height: 200px; /* Ajusta según tus necesidades */
+  }
+  
+  .slide-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    background-color: #f4f5f8;
+    border-radius: 10px;
+  }
   // License Plate
   .placa {
       border-radius: 4px;

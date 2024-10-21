@@ -12,6 +12,28 @@
   <div class="search-drivers-container">
     <app-mapa class="search-drivers-mapa"></app-mapa>
     <div class="ion-padding search-drivers-content">
+      <!-- Nuevo componente de slides -->
+      <swiper-container [slidesPerView]="1" [pagination]="true">
+        <swiper-slide>
+          <div class="slide-content">
+            <h2>Slide 1</h2>
+            <p>Contenido del slide 1</p>
+          </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="slide-content">
+            <h2>Slide 2</h2>
+            <p>Contenido del slide 2</p>
+          </div>
+        </swiper-slide>
+        <swiper-slide>
+          <div class="slide-content">
+            <h2>Slide 3</h2>
+            <p>Contenido del slide 3</p>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+      
       <ion-list mode="ios">
         <div class="vehicle-card-problem">
           <ion-item class="my-vehicle-card">
